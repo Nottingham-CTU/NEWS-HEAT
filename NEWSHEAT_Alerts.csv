@@ -1,0 +1,78 @@
+﻿alert-unique-id,alert-title,alert-trigger,unique-form-name,unique-event-name,saved-with-form-status,alert-condition,ensure-logic-still-true,do-not-clear-recurrences,alert-stop-type,send-on,send-on-next-day-type,send-on-next-time,send-on-time-lag-days,send-on-time-lag-hours,send-on-time-lag-minutes,send-on-field-after,send-on-field,send-on-date,alert-send-how-many,every-time-type,repeat-for,repeat-for-units,repeat-for-max,alert-expiration,alert-type,email-from-display,email-from,email-to,email-cc,email-bcc,email-failed,email-subject,alert-message,sendgrid-template-id,sendgrid-template-data,sendgrid-mail-send-configuration,prevent-piping-identifiers,file-upload-fields,phone-number-to,alert-deactivated
+A-1855,"Phase 1 Start",LOGIC,,,ANY,"[site_details_arm_3][site_dag_label_calc] <> '' and 
+[site_details_arm_3][site_dag_name] <> '' and 
+[site_details_arm_3][site_phase_1_start_date] <> '' and
+(datediff([site_details_arm_3][site_phase_1_start_date], 'today', 'd', false) = 0)",Y,Y,RECORD,TIME_LAG,,,0,8,0,after,[site_details_arm_3][site_phase_1_start_date],,SCHEDULE,,1,DAYS,100,,EMAIL,,newsheat@nottingham.ac.uk,[site_details_arm_3][site_email_1];[site_details_arm_3][site_email_2];[site_details_arm_3][site_email_3];[site_details_arm_3][site_email_4];[site_details_arm_3][site_email_5];[site_details_arm_3][site_email_6];[site_details_arm_3][site_email_7];[site_details_arm_3][site_email_8];[site_details_arm_3][site_email_9];[site_details_arm_3][site_email_10],newsheat@nottingham.ac.uk,,newsheat@nottingham.ac.uk,"Notification - Start of Phase 1 (Baseline control phase) for [record-dag-label]","<p>Hello,</p>
+<p><strong>This is an automated email notifying site [record-dag-label] that the scheduled date for Phase 1 - Baseline control phase (2 months) has been reached. </strong></p>
+<p>During this phase, in order to collect accurate data on current care and temperature monitoring at the time of birth, hospitals will be asked to record data on all eligible infants; this is before any intervention or EENC training take place.</p>
+<p>If this is inaccurate, please be sure to update the [site_details_arm_3][form-link:site_phase_dates_addtl_info] form on the REDCap database with the correct date. If the date is updated, this alert will retrigger on the updated start date.</p>
+<p>Kind regards,</p>
+<p>NEWS-HEAT</p>
+<hr>
+<p><em>Email addresses can be added to, removed from, or updated on the mailing list for this site by updating the [site_details_arm_3][form-link:notification_email_addresses] form.</em></p>",,{},{},N,,,Y
+A-1859,"Phase 2 Start",LOGIC,,,ANY,"[site_details_arm_3][site_dag_label_calc] <> '' and 
+[site_details_arm_3][site_dag_name] <> '' and 
+[site_details_arm_3][site_phase_2_start_date] <> '' and
+(datediff([site_details_arm_3][site_phase_2_start_date], 'today', 'd', false) = 0)",Y,Y,RECORD,TIME_LAG,,,0,8,0,after,[site_details_arm_3][site_phase_2_start_date],,SCHEDULE,,1,DAYS,100,,EMAIL,,newsheat@nottingham.ac.uk,[site_details_arm_3][site_email_1];[site_details_arm_3][site_email_2];[site_details_arm_3][site_email_3];[site_details_arm_3][site_email_4];[site_details_arm_3][site_email_5];[site_details_arm_3][site_email_6];[site_details_arm_3][site_email_7];[site_details_arm_3][site_email_8];[site_details_arm_3][site_email_9];[site_details_arm_3][site_email_10],newsheat@nottingham.ac.uk,,newsheat@nottingham.ac.uk,"Notification - Start of Phase 2 (Training on EENC) for [record-dag-label]","<p>Hello,</p>
+<p><strong>This is an automated email notifying site [record-dag-label] that the scheduled date for Phase 2 - Training on EENC for all sites (1 month) has been reached. </strong></p>
+<p>During this phase, the aim is to ensure all participating hospitals are trained in the same aspects of newborn care at the time of birth, prior to any further intervention being introduced.</p>
+<p>If this is inaccurate, please be sure to update the [site_details_arm_3][form-link:site_phase_dates_addtl_info] form on the REDCap database with the correct date. If the date is updated, this alert will retrigger on the updated start date.</p>
+<p>Kind regards,</p>
+<p>NEWS-HEAT</p>
+<hr>
+<p><em>Email addresses can be added to, removed from, or updated on the mailing list for this site by updating the [site_details_arm_3][form-link:notification_email_addresses] form.</em></p>",,{},{},N,,,Y
+A-1860,"Phase 3a Start",LOGIC,,,ANY,"[site_details_arm_3][site_dag_label_calc] <> '' and 
+[site_details_arm_3][site_dag_name] <> '' and 
+[site_details_arm_3][site_phase_3a_start_date] <> '' and
+(datediff([site_details_arm_3][site_phase_3a_start_date], 'today', 'd', false) = 0)",Y,Y,RECORD,TIME_LAG,,,0,8,0,after,[site_details_arm_3][site_phase_3a_start_date],,SCHEDULE,,1,DAYS,100,,EMAIL,,newsheat@nottingham.ac.uk,[site_details_arm_3][site_email_1];[site_details_arm_3][site_email_2];[site_details_arm_3][site_email_3];[site_details_arm_3][site_email_4];[site_details_arm_3][site_email_5];[site_details_arm_3][site_email_6];[site_details_arm_3][site_email_7];[site_details_arm_3][site_email_8];[site_details_arm_3][site_email_9];[site_details_arm_3][site_email_10],newsheat@nottingham.ac.uk,,newsheat@nottingham.ac.uk,"Notification - Start of Phase 3a (Randomisation and NEWS-HEAT training phase) for [record-dag-label]","<p>Hello,</p>
+<p><strong>This is an automated email notifying site [record-dag-label] that the scheduled date for Phase 3a - Randomisation and NEWS-HEAT training phase (2 months) has been reached. </strong></p>
+<p>This phase will include time for training of intervention sites and cascade of training to all staff.</p>
+<p>If this is inaccurate, please be sure to update the [site_details_arm_3][form-link:site_phase_dates_addtl_info] form on the REDCap database with the correct date. If the date is updated, this alert will retrigger on the updated start date.</p>
+<p>Kind regards,</p>
+<p>NEWS-HEAT</p>
+<hr>
+<p><em>Email addresses can be added to, removed from, or updated on the mailing list for this site by updating the [site_details_arm_3][form-link:notification_email_addresses] form.</em></p>",,{},{},N,,,Y
+A-1861,"Phase 3b Start (EENC only)",LOGIC,,,ANY,"[site_details_arm_3][site_dag_label_calc] <> '' and 
+[site_details_arm_3][site_dag_name] <> '' and 
+[site_details_arm_3][site_phase_3b_start_date] <> '' and
+[site_details_arm_3][site_rand_grp] = 'eenc_only' and
+(datediff([site_details_arm_3][site_phase_3b_start_date], 'today', 'd', false) = 0)",Y,Y,RECORD,TIME_LAG,,,0,8,0,after,[site_details_arm_3][site_phase_3b_start_date],,SCHEDULE,,1,DAYS,100,,EMAIL,,newsheat@nottingham.ac.uk,[site_details_arm_3][site_email_1];[site_details_arm_3][site_email_2];[site_details_arm_3][site_email_3];[site_details_arm_3][site_email_4];[site_details_arm_3][site_email_5];[site_details_arm_3][site_email_6];[site_details_arm_3][site_email_7];[site_details_arm_3][site_email_8];[site_details_arm_3][site_email_9];[site_details_arm_3][site_email_10],newsheat@nottingham.ac.uk,,newsheat@nottingham.ac.uk,"Notification - Start of Phase 3b (EENC implementation phase) for [record-dag-label]","<p>Hello,</p>
+<p><strong>This is an automated email notifying site [record-dag-label] that the scheduled date for Phase 3b - NEWS-HEAT and comparator implementation phase (3 months) has been reached. </strong></p>
+<p>As this site has been randomised to EENC-only, this phase will include the implementation of EENC at this site.</p>
+<p>If this is inaccurate, please be sure to update the [site_details_arm_3][form-link:site_phase_dates_addtl_info] form on the REDCap database with the correct date. If the date is updated, this alert will retrigger on the updated start date.</p>
+<p>Kind regards,</p>
+<p>NEWS-HEAT</p>
+<hr>
+<p><em>Email addresses can be added to, removed from, or updated on the mailing list for this site by updating the [site_details_arm_3][form-link:notification_email_addresses] form.</em></p>",,{},{},N,,,Y
+A-1862,"Confirmation of Randomisation",SUBMIT-LOGIC,site_rand,site_details_arm_3,COMPLETE,"[site_details_arm_3][site_rand_grp] <> ''",N,N,RECORD,NOW,,,,,,,,,ONCE,,,,,,EMAIL,,newsheat@nottingham.ac.uk,[site_details_arm_3][site_email_1];[site_details_arm_3][site_email_2];[site_details_arm_3][site_email_3];[site_details_arm_3][site_email_4];[site_details_arm_3][site_email_5];[site_details_arm_3][site_email_6];[site_details_arm_3][site_email_7];[site_details_arm_3][site_email_8];[site_details_arm_3][site_email_9];[site_details_arm_3][site_email_10],newsheat@nottingham.ac.uk,,newsheat@nottingham.ac.uk,"Confirmation of Randomisation for [record-dag-label]","<p>Hello,</p>
+<p><strong>This is an automated email notifying site [record-dag-label] that their site has been randomised successfully.</strong></p>
+<p>Randomisation date/time: <em>[site_rand_datetime]</em></p>
+<p>Randomisation group: <em>[site_rand_grp]</em></p>
+<p>Kind regards,</p>
+<p>NEWS-HEAT</p>
+<hr>
+<p><em>Email addresses can be added to, removed from, or updated on the mailing list for this site by updating the [site_details_arm_3][form-link:notification_email_addresses] form.</em></p>",,{},{},N,,,N
+A-1863,"Phase 3b Start (EENC plus NEWS-HEAT care bundle)",LOGIC,,,ANY,"[site_details_arm_3][site_dag_label_calc] <> '' and 
+[site_details_arm_3][site_dag_name] <> '' and 
+[site_details_arm_3][site_phase_3b_start_date] <> '' and
+[site_details_arm_3][site_rand_grp] = 'eenc_plus_news_heat_care_bundle' and
+(datediff([site_details_arm_3][site_phase_3b_start_date], 'today', 'd', false) = 0)",Y,Y,RECORD,TIME_LAG,,,0,8,0,after,[survey-date-completed:placeholder],,SCHEDULE,,1,DAYS,100,,EMAIL,,newsheat@nottingham.ac.uk,[site_details_arm_3][site_email_1];[site_details_arm_3][site_email_2];[site_details_arm_3][site_email_3];[site_details_arm_3][site_email_4];[site_details_arm_3][site_email_5];[site_details_arm_3][site_email_6];[site_details_arm_3][site_email_7];[site_details_arm_3][site_email_8];[site_details_arm_3][site_email_9];[site_details_arm_3][site_email_10],newsheat@nottingham.ac.uk,,newsheat@nottingham.ac.uk,"Notification - Start of Phase 3b (EENC plus NEWS-HEAT care bundle implementation phase) for [record-dag-label]","<p>Hello,</p>
+<p><strong>This is an automated email notifying site [record-dag-label] that the scheduled date for Phase 3b - NEWS-HEAT and comparator implementation phase (3 months) has been reached. </strong></p>
+<p>As this site has been randomised to EENC plus NEWS-HEAT care bundle, this phase will include the implementation of EENC plus the NEWS-HEAT care bundle at this site.</p>
+<p>If this is inaccurate, please be sure to update the [site_details_arm_3][form-link:site_phase_dates_addtl_info] form on the REDCap database with the correct date. If the date is updated, this alert will retrigger on the updated start date.</p>
+<p>Kind regards,</p>
+<p>NEWS-HEAT</p>
+<hr>
+<p><em>Email addresses can be added to, removed from, or updated on the mailing list for this site by updating the [site_details_arm_3][form-link:notification_email_addresses] form.</em></p>",,{},{},N,,,Y
+A-1867,"Phase 3b Start (Unrandomised sites)",LOGIC,,,ANY,"[site_details_arm_3][site_dag_label_calc] <> '' and 
+[site_details_arm_3][site_dag_name] <> '' and 
+[site_details_arm_3][site_phase_3b_start_date] <> '' and
+[site_details_arm_3][site_rand_grp] = '' and
+(datediff([site_details_arm_3][site_phase_3b_start_date], 'today', 'd', false) = 0)",Y,Y,RECORD,TIME_LAG,,,0,8,0,after,[site_details_arm_3][site_phase_3b_start_date],,SCHEDULE,,1,DAYS,100,,EMAIL,,newsheat@nottingham.ac.uk,[site_details_arm_3][site_email_1];[site_details_arm_3][site_email_2];[site_details_arm_3][site_email_3];[site_details_arm_3][site_email_4];[site_details_arm_3][site_email_5];[site_details_arm_3][site_email_6];[site_details_arm_3][site_email_7];[site_details_arm_3][site_email_8];[site_details_arm_3][site_email_9];[site_details_arm_3][site_email_10],newsheat@nottingham.ac.uk,,newsheat@nottingham.ac.uk,"Notification - Start of Phase 3b (NEWS-HEAT and comparator implementation phase) for [record-dag-label]","<p>Hello,</p>
+<p><strong>This is an automated email notifying site [record-dag-label] that the scheduled date for Phase 3b - NEWS-HEAT and comparator implementation phase (3 months) has been reached. </strong></p>
+<p>This phase will include the implementation of EENC plus the NEWS-HEAT care bundle in half of the participating facilities, with the other half of facilities implementing EENC only.</p>
+<p>If this is inaccurate, please be sure to update the [site_details_arm_3][form-link:site_phase_dates_addtl_info] form on the REDCap database with the correct date. If the date is updated, this alert will retrigger on the updated start date.</p>
+<p>Kind regards,</p>
+<p>NEWS-HEAT</p>
+<hr>
+<p><em>Email addresses can be added to, removed from, or updated on the mailing list for this site by updating the [site_details_arm_3][form-link:notification_email_addresses] form.</em></p>",,{},{},N,,,Y
