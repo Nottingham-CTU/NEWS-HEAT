@@ -1,0 +1,47 @@
+data_access_group_name,unique_group_name,data_access_group_id
+"00 Standard Care",00_standard_care,1335
+"01 Intervention A",01_intervention_a,1332
+"02 Intervention B",02_intervention_b,1333
+"03 Intervention C",03_intervention_c,1334
+"04 Intervention D",04_intervention_d,1346
+"07 Test DAG Seven",07_test_dag_seven,1369
+"08 Test Site Eight",08_test_site_eight,1417
+"10 Test Site Ten",10_test_site_ten,1371
+"11 Test Site Eleven",11_test_site_eleve,1354
+"12 Test Site Twelve",12_test_site_twelv,1372
+"13 Test Site Thirteen",13_test_site_thirt,1358
+"14 Test Site Fourteen",14_test_site_fourt,1374
+"15 Test Site Fifteen",15_test_site_fifte,1375
+"16 Test Site Sixteen",16_test_site_sixte,1359
+"17 Test Site Seventeen",17_test_site_seven,1376
+"18 Test Site Eighteen",18_test_site_eight,1361
+"19 Test Site Nineteen",19_test_site_ninet,1377
+"20 Test Site Twenty",20_test_site_twent,1365
+"21 Test Site Twenty One",21_test_site_twent,1378
+"22 Test Site Twenty Two",22_test_site_twent,1379
+"23 Test Site Twenty Three",23_test_site_twent,1368
+"24 Test Site Twenty Four",24_test_site_twent,1381
+"25 Test Site Twenty Five",25_test_site_twent,1382
+"30 Test Site Thirty",30_test_site_thirt,1390
+"31 Test Site Thirty One",31_test_site_thirt,1399
+"32 Test Site Thirty Two",32_test_site_thirt,1400
+"33 Test Site Thirty Three",33_test_site_thirt,1401
+"34 Test Site Thirty Four",34_test_site_thirt,1402
+"35 Test Site Thirty Five",35_test_site_thirt,1403
+"36 Test Site Thirty Six",36_test_site_thirt,1404
+"37 Test Site Thirty Seven",37_test_site_thirt,1405
+"38 Test Site Thirty Eight",38_test_site_thirt,1406
+"41 Test Site Fourty One",41_test_site_fourt,1418
+"42 Test Site Fourty Two",42_test_site_fourt,1419
+"43 Test Site Fourty Three",43_test_site_fourt,1420
+"44 Test Site Fourty Four",44_test_site_fourt,1421
+"45 Test Site Fourty Five",45_test_site_fourt,1423
+"50 Test Site Fifty",50_test_site_fifty,1407
+"51 Test Site Fifty One",51_test_site_fifty,1408
+"52 Test Site Fifty Two",52_test_site_fifty,1409
+"53 Test Site Fifty Three",53_test_site_fifty,1410
+"54 Test Site Fifty Four",54_test_site_fifty,1411
+"55 Test Site Fifty Five",55_test_site_fifty,1412
+"56 Test Site Fifty Six",56_test_site_fifty,1413
+"57 Test Site Fifty Seven",57_test_site_fifty,1414
+"58 Test Site Fifty Eight",58_test_site_fifty,1415

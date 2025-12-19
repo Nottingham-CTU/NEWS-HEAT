@@ -4,5 +4,4 @@ event_name,arm_num,unique_event_name,custom_event_label
 "Admin (NCTU only)",1,admin_nctu_only_arm_1,
 "Screening Log",2,screening_log_arm_2,
 "Site Details",3,site_details_arm_3,
-"Automated Email Notifications",3,automated_email_no_arm_3,
 "Site Notification Emails",4,site_notification_arm_4,

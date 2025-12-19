@@ -1,0 +1,1521 @@
+"Variable / Field Name","Form Name","Section Header","Field Type","Field Label","Choices, Calculations, OR Slider Labels","Field Note","Text Validation Type OR Show Slider Number","Text Validation Min","Text Validation Max",Identifier?,"Branching Logic (Show field only if...)","Required Field?","Custom Alignment","Question Number (surveys only)","Matrix Group Name","Matrix Ranking?","Field Annotation"
+ref_id,new,,text,"Reference Number",,,,,,,,,,,,,"Data Management"
+new_record_intro,new,,descriptive,"<div style=""padding: 10px; color: rgb(0, 85, 149);border: 4px solid  rgb(0, 85, 149); background-color:  rgba(0, 85, 149, 0.1)""><span style=""font-family: 'Open Sans'; font-size: 12pt;""><em>You are creating a new record, [record-name].</em></span>
+
+<span style=""font-family: 'Open Sans'; font-size: 12pt;""><em>Please refer to the Project Dashboard, <a href=""[redcap-base-url]redcap/index.php?route=ProjectDashController:view&dash_id=14&pid=[project-id]"">Reference Number Guidance</a>, for help/guidance on naming new records.</em></span>
+
+<span style=""font-family: 'Open Sans'; font-size: 12pt;""><em>To create this record and begin adding data, mark this form as ""Complete"" and save.</em></span></div>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF @SAVEOPTIONS='nextform'"
+new_version,new,,dropdown,"Form Version","1.0, 1.0",,,,,,,y,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+new_app_lasteditedby,new,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+arm1_site_shortlabel,matdata,,text,"Site Label (shortened)",,,,,,,,y,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET
+@CALCTEXT(
+if(
+find (' (', [record-dag-label]) <> 0,
+left([record-dag-label],find (' (', [record-dag-label])-1),
+[record-dag-label])
+)"
+ref_id_arm1_dag_pfx,matdata,,text,"Reference Number - DAG Prefix",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF
+@CALCTEXT(
+if(left([record-dag-label], 2)='' and [matdata_complete] = '',
+    left([user-dag-label],2),
+    left([record-dag-label],2)
+)
+)"
+ref_id_arm1_pno,matdata,,text,"Reference Number - Participant No",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF
+@CALCTEXT(
+    right([ref_id], 4)
+)"
+ref_id_arm1_len_valid,matdata,,calc,"Reference Number is a valid length?","if(
+    length([ref_id]) = 7,
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm1_pfx_valid,matdata,,calc,"Reference Number prefix is valid?","if(
+    left([ref_id], 2) = left([record-dag-label], 2),
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm1_sp_valid,matdata,,calc,"Reference Number has dash separator between DAG prefix and number?","if(
+     mid([ref_id], 3, 1) = '-',
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm1_pno_valid,matdata,,calc,"Reference Number suffix (participant no) is valid?","if(
+    isnumber(mid([ref_id], 4, 1)) and isnumber(mid([ref_id], 5, 1)) and isnumber(mid([ref_id], 6, 1)) and isnumber(mid([ref_id], 7, 1)),
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm1_valid,matdata,,calc,"Reference Number is valid?","if(
+    [ref_id_arm1_len_valid] = 1 and [ref_id_arm1_pfx_valid] = 1 and [ref_id_arm1_sp_valid] = 1 and [ref_id_arm1_pno_valid] = 1,
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm1_err,matdata,,descriptive,"<div style=""text-align: center; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1); padding: 10px;""> <h5 style=""font-weight: 900;"">Sorry, the record must be assigned to a data access group/site and the Reference Number must follow the correct format, e.g.: 01-0001.</h5> </div> ",,,,,,,"[record-dag-name] = '' and [ref_id_arm1_valid] = '0'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+ref_id_arm1_err_nodag,matdata,,descriptive,"<div style=""text-align: center; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1); padding: 10px;""> <h5 style=""font-weight: 900;"">Sorry, the record must be assigned to a data access group/site.</h5> </div> ",,,,,,,"[record-dag-name] = '' and [ref_id_arm1_valid] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+ref_id_arm1_err_format,matdata,,descriptive,"<div style=""text-align: center; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1); padding: 10px;""> <h5 style=""font-weight: 900;"">Sorry, the Reference Number does not follow the correct format, e.g.: [ref_id_arm1_dag_pfx]-0001.</h5> </div>
+<h5 style=""text-align:center;"">Please try again with a valid Reference Number, which will be:</h5> <table style=""width: 100%; height: 75.2778px; background-color: #ffffff; border-style: none; border-image: initial; margin-left: auto; margin-right: auto;"" border=""0""> <colgroup> <col style=""width: 44.5%;""> <col style=""width: 11%;""> <col style=""width: 44.5%;""> </colgroup> <tbody> <tr style=""height: 32.6389px;""> <td style=""text-align: right; border-right: 1px dashed  rgb(186, 55, 42); padding: 3px; border-bottom: 2px solid rgb(186, 55, 42);""> <h5 style=""font-weight: 900;"">[ref_id_arm1_dag_pfx]</h5> </td> <td style=""text-align: center; border-right: 1px dashed  rgb(186, 55, 42); padding: 3px; border-bottom: 2px solid rgb(186, 55, 42);""> <h5 style=""font-weight: 900;"">-</h5> </td> <td style=""text-align: left; padding: 3px; border-bottom: 2px solid rgb(186, 55, 42);""> <h5 style=""font-weight: 900;"">0123</h5> </td> </tr> <tr style=""height: 42.6389px;""> <td style=""text-align: right; border-right: 1px dashed  rgb(186, 55, 42); padding: 3px;""> <h6 style=""font-weight: normal;""> <em>The number prefix for the record's data access group, [arm1_site_shortlabel]</em> </h6> </td> <td style=""text-align: center; border-right: 1px dashed  rgb(186, 55, 42); padding: 3px;""> <h6 style=""font-weight: normal;""> <em>A dash</em> </h6> </td> <td style=""text-align: left; padding: 3px;""> <h6 style=""font-weight: normal;""> <em>A unique number, with zeroes padding the beginning so that there are 4 total numbers</em> </h6> </td> </tr> </tbody> </table> 
+<h5 style=""text-align:center;"">Valid Reference Number builder:</h5> <table style=""height: 99.4445px; background-color: #ffffff; border-style: none; border-image: initial; margin-left: auto; margin-right: auto;"" border=""0""> <tbody> <tr style=""height: 24.8611px;""> <td style=""text-align: right; padding: 3px;border-right: 1px dashed  rgb(186, 55, 42); border-bottom: 2px solid rgb(186, 55, 42);""> <h6 style=""font-weight: 900;"">Enter a number for the participant:</h6> <h6 style=""margin-top: 0px; font-weight: normal;""> <em>For instance, for the 10th participant, you could enter 10.</em> </h6> </td> <td style=""text-align: left; padding: 3px; border-bottom: 2px solid rgb(186, 55, 42);""> <h6 style=""font-weight: 900;"">{ref_id_arm1_builder_no}</h6> </td> </tr> <tr style=""height: 24.8611px;""> <td style=""text-align: right; padding: 3px;border-right: 1px dashed  rgb(186, 55, 42);""> <h6 style=""font-weight: 900;"">Result:</h6> <h6 style=""margin-top: 0px; font-weight: normal;""> <em>Use this when creating a new record</em> </h6> </td> <td style=""text-align: left; padding: 3px;""> <h6 style=""font-weight: 900;"">{ref_id_arm1_builder_rslt}</h6> </td> </tr> </tbody> </table>",,,,,,,"[record-dag-name] <> '' and [ref_id_arm1_valid] = '0'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+ref_id_arm1_builder_no,matdata,,text,"Participant Number",,,integer,1,9999,,,,,,,,"Miscellaneous
+@FORCE-MINMAX"
+ref_id_arm1_builder_rslt,matdata,,text,Result,,,,,,,,,,,,,"Derived
+Miscellaneous
+@CALCTEXT(
+if(
+    [ref_id_arm1_builder_no] <> '',
+    concat(
+        [ref_id_arm1_dag_pfx], 
+        '-', 
+        if(length([ref_id_arm1_builder_no]) = 1,
+            concat('000',[ref_id_arm1_builder_no]),
+            if(length([ref_id_arm1_builder_no]) = 2,
+                concat('00',[ref_id_arm1_builder_no]),
+                if(length([ref_id_arm1_builder_no]) = 3,
+                    concat('0',[ref_id_arm1_builder_no]),
+                    [ref_id_arm1_builder_no]
+                )
+            )
+        )
+    
+    ),
+    '')
+)"
+matdata_version,matdata,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+matdata_app_lasteditedby,matdata,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+matdata_title,matdata,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Maternal Data</h2>",,,,,,,"[ref_id_arm1_valid] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+matdata_form_date,matdata,,text,"Date form first opened & saved (for use in age calculation based upon DOB)",,,date_dmy,,,,,,,,,,"Data Management
+@DEFAULT=@TODAY @READONLY @HIDDEN @HIDDEN-PDF"
+matdata_birth_locs,matdata,,checkbox,"Location(s) of birth(s)","labour_ward, Labour ward | maternity_theatre, Maternity theatre | other, Other | unknown, Unknown",,,,,,"[ref_id_arm1_valid] = '1'",y,,,,,"Eligibility
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+matdata_birth_locs_elig,matdata,,text,"Mother has at least one valid birth location selected (calc)",,,,,,,,,,,,,"Derived
+Data Management
+Eligibility
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+    if(
+        [matdata_birth_locs(labour_ward)] = '1' or [matdata_birth_locs(maternity_theatre)] = '1',
+        1,
+        0
+    )
+)"
+matdata_birt_locs_unsel,matdata,,text,"Location(s) of birth not selected (calc) (used to disable options not selected on baby forms)",,,,,,,,y,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+concat_ws(',',
+    if([matdata_birth_locs(labour_ward)] = '0','labour_ward',''),
+    if([matdata_birth_locs(maternity_theatre)] = '0','maternity_theatre',''),
+    if([matdata_birth_locs(other)] = '0','other',''),
+    if([matdata_birth_locs(unknown)] = '0','unknown','')
+)
+)"
+matdata_ineligible,matdata,,descriptive,"<div class=""rich-text-field-label""><div style=""font-size: 120%; text-align: center; padding: 10px; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1);"">The baby/babies born to this person are <em><span style=""text-decoration: underline;"">ineligible</span></em>, as, according to the data entered, none were born in the labour ward/maternity theatre. No further data is required.  Please remember reasons for not being included need to be recorded in the screening log.</div></div>",,,,,,,"[matdata_birth_locs(labour_ward)] = '0' and [matdata_birth_locs(maternity_theatre)] = '0' and ([matdata_birth_locs(other)] = '1' or [matdata_birth_locs(unknown)] = '1')",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+matdata_dob_known,matdata,,radio,"Is the mothers' date of birth known?","yes, Yes | no, No",,,,,,"[ref_id_arm1_valid] = '1'",y,,,,,"Data Management
+@NOMISSING"
+matdata_dob,matdata,,text,"Date of birth",,,date_dmy,[matdata_dob_min],[matdata_dob_max],y,"[matdata_dob_known] = 'yes'",y,,,,,"Participant Identifier
+Demographics
+@HIDEBUTTON @NOMISSING @FORCE-MINMAX"
+matdata_dob_min,matdata,,text,"Date of birth minimum",,,date_dmy,,,y,,,,,,,"Derived
+Data Management
+Participant Identifier
+@HIDDEN @HIDDEN-PDF @READONLY @CALCDATE([matdata_form_date], -113, 'y')"
+matdata_dob_max,matdata,,text,"Date of birth maximum",,,date_dmy,,,y,,,,,,,"Derived
+Data Management
+Participant Identifier
+@HIDDEN @HIDDEN-PDF @READONLY @CALCDATE([matdata_form_date], -5, 'y')"
+matdata_age_calc,matdata,,calc,"Age at time of maternal data form first being opened and saved OR as reported on maternal data form if date of birth was reported as unknown (hidden)","if([matdata_dob] <> '',
+((((rounddown(((datediff([matdata_form_date],""28-02-1900"",""d"",""dmy""))/365.25),0))-(rounddown(((datediff([matdata_dob],""28-02-1900"",""d"",""dmy""))/365.25),0))))-(if(((datediff([matdata_dob],""28-02-1900"",""d"",""dmy"")) - rounddown(((rounddown(((datediff([matdata_dob],""28-02-1900"",""d"",""dmy""))/365.25),0))*365.25),0)) > (datediff([matdata_form_date],""28-02-1900"",""d"",""dmy"")) - rounddown(((rounddown(((datediff([matdata_form_date],""28-02-1900"",""d"",""dmy""))/365.25),0))*365.25),0),1,0))),
+[matdata_age]
+)",,,,,y,,,,,,,"Derived
+Data Management
+Participant Identifier
+@HIDDEN @HIDDEN-PDF"
+matdata_age,matdata,,text,"Age (if date of birth unknown)",,,number,5,112,y,"[matdata_dob_known] = 'no'",y,,,,,"Participant Identifier
+Demographics
+@NOMISSING @FORCE-MINMAX"
+matdata_dob_val_warn,matdata,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The date of birth entered for this person - [matdata_dob]  - indicates this person is [matdata_age_calc] years old. Please doublecheck this value and ensure it is correct.</div>",,,,,,,"[matdata_dob] <> '' and ([matdata_age_calc] < 15 or [matdata_age_calc] > 49)",,,,,,"Miscellaneous
+@HIDDEN-PDF @HIDDEN-APP"
+matdata_age_val_warn,matdata,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The age entered for this person indicates they are [matdata_age] years old. Please doublecheck this value and ensure it is correct.</div>",,,,,,,"[matdata_age] <> '' and ([matdata_age] < 15 or [matdata_age] > 49)",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+matdata_age_val_warn_2,matdata,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The age entered for this person indicates they are [matdata_age] years old. Please doublecheck this value and ensure it is correct.</div>",,,,,,,"[matdata_age] <> '' and ([matdata_age] < 15 or [matdata_age] > 49)",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+matdata_gravida,matdata,"<h3 class=""h5"" style=""text-align: center; text-transform: capitalize;"">Pregnancy History</h3>",text,"Total number of pregnancies (irrespective of outcome)",,,number,0,903,,"[matdata_birth_locs(labour_ward)] = '1' or [matdata_birth_locs(maternity_theatre)] = '1'",y,,,,,"Medical History
+// National Institutes of Health (NIH) | (.gov) https://pmc.ncbi.nlm.nih.gov > articles > PMC2244694 by M Chavez-MacGregor · 2007 · Cited by 72 - The median number of lifetime menstrual cycles was 451.3. For the absolute max, 451.3 * 2 = 902.6, rounded up to 903, should do.
+@FORCE-MINMAX"
+matdata_gravida_val_warn,matdata,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The number entered for 'Total number pregnancies (irrespective of outcome)' is [matdata_gravida]. Please doublecheck this value and ensure it is correct.</div>",,,,,,,"[matdata_gravida] > 24",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+matdata_parity,matdata,,text,"Total number of births >28 weeks gestational age (irrespective of outcome)",,,number,0,138,,"[matdata_birth_locs(labour_ward)] = '1' or [matdata_birth_locs(maternity_theatre)] = '1'",y,,,,,"Medical History
+// The maximum number of births a woman has ever had is 69, a record held by Valentina Vassilyeva of 18th-century Russia. Between 1725 and 1765, she gave birth 27 times, including 16 sets of twins, 7 sets of triplets, and 4 sets of quadruplets. For the absolute maximum, 69 * 2 = 138
+@FORCE-MINMAX"
+matdata_parity_val_warn,matdata,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The number entered for 'Total number of births >28 weeks gestational age (irrespective of outcome)' is [matdata_parity]. Please doublecheck this value and ensure it is correct.</div>",,,,,,,"[matdata_parity] > 29",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+matdata_were_pregcomp,matdata,"<h3 class=""h5"" style=""text-align: center; text-transform: capitalize;"">About This Latest Pregnancy/Delivery</h3>",radio,"Were there any pregnancy complications?","yes, Yes | no, No | unknown, Unknown",,,,,,"[matdata_birth_locs(labour_ward)] = '1' or [matdata_birth_locs(maternity_theatre)] = '1'",y,,,,,"Medical History
+@NOMISSING"
+matdata_pregcomp,matdata,,checkbox,"Please select from the list of pregnancy complications","antepartum_haemorrhage, Antepartum haemorrhage | diabetes_in_pregnancy_incl_gdm, Diabetes in pregnancy (including GDM) | fetal_distress_non_reass_fetal_status_obstructed_labour, Fetal distress/non reassuring fetal status, obstructed labour | maternal_fever_more_than_38c, Maternal fever >38.0c | maternal_infection_on_microscopy_culture, Maternal infection (on microscopy culture) | pre_exlampsia, Pre-eclampsia | preterm_prelabour_rupture_of_membranes_pprom, Preterm prelabour rupture of membranes (PPROM) | prolonged_rupture_of_membranes_prom, Prolonged rupture of membranes (PROM) | none_of_the_above, None of the above","Tick all that apply",,,,,"[matdata_were_pregcomp] = 'yes'",y,,,,,"Medical History
+@NONEOFTHEABOVE='none_of_the_above'"
+matdata_steroids,matdata,,radio,"Were antenatal corticosteroids administered?","yes, Yes | no, No | unknown, Unknown",,,,,,"[matdata_birth_locs(labour_ward)] = '1' or [matdata_birth_locs(maternity_theatre)] = '1'",y,,,,,"Medical History
+@NOMISSING"
+matdata_multiple,matdata,,radio,"Multiple birth","yes, Yes | no, No",,,,,,"[matdata_birth_locs(labour_ward)] = '1' or [matdata_birth_locs(maternity_theatre)] = '1'",y,,,,,"Medical History
+@NOMISSING"
+matdata_multiple_type,matdata,,radio,"Please select type of multiple birth","twins, Twins | triplets, Triplets | other_more_than_triplets, Other (More than triplets)",,,,,,"[matdata_multiple] = 'yes'",y,,,,,"Medical History
+@NOMISSING"
+matdata_multiple_num,matdata,,text,"If the pregnancy was more than triplets, please state the number of babies born (irrespective of stillbirth)",,,number,4,30,,"[matdata_multiple_type] = 'other_more_than_triplets'",y,,,,,"Medical History
+// Largest recorded number of fetuses is 15 in a single uterus (Dr. Gennaro Montanino of Rome reported removing 15 fetuses from a 35-year-old woman on July 22, 1971), did this number * 2 for the absolute maximum
+@FORCE-MINMAX @NOMISSING"
+matdata_multiple_num_calc,matdata,,calc,"Number of babies calc (for piping)","if(
+    [matdata_multiple_type:value] = 'twins',
+   2,
+   if(
+        [matdata_multiple_type:value] = 'triplets',
+       3,
+       if(
+            [matdata_multiple_type:value] = 'other_more_than_triplets',
+           [matdata_multiple_num],
+           ''
+        )
+    )
+)",,,,,,,y,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+matdata_multiple_num_warn,matdata,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The number entered for ""If the pregnancy was more than triplets, please state the number of babies born (irrespective of stillbirth)"" is [matdata_multiple_num]. Please doublecheck this value and ensure it is correct.</div>",,,,,,,"[matdata_multiple_num] > 9",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+matdata_multiple_num_live,matdata,,text,"Of the [matdata_multiple_num_calc] babies born, how many were live births?",,,number,1,[matdata_multiple_num_calc],,"[matdata_multiple] = 'yes' AND [matdata_multiple_num_calc] <> ''",y,,,,,"Medical History
+@FORCE-MINMAX @NOMISSING"
+matdata_multiple_num_live_warn,matdata,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The number entered for ""Of the [matdata_multiple_num] babies born, how many were live births?"" is [matdata_multiple_num_live]. Please doublecheck this value and ensure it is correct.</div>",,,,,,,"[matdata_multiple_num] > 9",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_version,babyenrol,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+babyenrol_app_lasteditedby,babyenrol,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+babyenrol_title,babyenrol,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Baby Enrolment - [record-name] Baby #[current-instance]</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_loc_birth,babyenrol,"<h3 class=""h5"" style=""text-align: center; text-transform: capitalize;"">Eligibility</h3>",radio,"Location of birth
+{babyenrol_loc_birth_note}","labour_ward, Labour ward | maternity_theatre, Maternity theatre | other, Other | unknown, Unknown","NOTE: Option(s) available here are shown if they are selected on the maternal data form.",,,,,,y,,,,,"Eligibility
+Medical History
+Primary Outcome Not Primary Analysis
+@NOMISSING @DEFAULT='[babyenrol_loc_birth:value][previous-instance]' @HIDECHOICE='[trial_data__mother_arm_1][matdata_birt_locs_unsel]'"
+babyenrol_loc_birth_note,babyenrol,,descriptive,"<div class=""rich-text-field-label""><p><em><span style=""font-weight: normal;"">Default value: [babyenrol_loc_birth][previous-instance] (pulled from baby #[previous-instance]) - Please doublecheck and ensure this default value is correct.</span></em></p></div>",,,,,,,"[current-instance] <> 1 and [babyenrol_loc_birth][previous-instance] <> ''",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_anom,babyenrol,,radio,"Was the baby born with a lethal congenital anomaly (e.g. anencephaly, Trisomy 13, Trisomy 18)?","yes, Yes | no, No",,,,,,,y,,,,,"Eligibility
+@NOMISSING"
+babyenrol_surv,babyenrol,,radio,"According to the attending clinician, does the baby have a reasonable prospect of survival?","yes, Yes | no, No",,,,,,,y,,,,,"Eligibility
+@NOMISSING"
+babyenrol_weight,babyenrol,,text,"Birth weight",,grams,number,0,20000,,,y,,,,,"Eligibility
+Medical History
+Primary Outcome Not Primary Analysis
+// Largest birth weight was a baby born to Anna Bates (née Swan), she gave birth to a boy weighing 9.98 kg at her home in Seville, Ohio, USA, on 19 January 1879 -- generally for upper limit we do highest recorded number * 2 - https://www.guinnessworldrecords.com/world-records/heaviest-birth
+@FORCE-MINMAX @NOMISSING"
+babyenrol_gestage_weeks,babyenrol,,text,"Gestational age at birth - weeks",,,number,0,44,,,y,,,,,"Eligibility
+Medical History
+@FORCE-MINMAX @NOMISSING"
+babyenrol_gestage_days,babyenrol,,text,"Gestational age at birth - days",,,number,0,6,,,y,,,,,"Eligibility
+Medical History
+@FORCE-MINMAX @NOMISSING @DEFAULT=0"
+babyenrol_gestage_howcalc,babyenrol,,radio,"How was the gestational age calculated?
+{babyenrol_gestage_howcalc_note}","ultrasound, Ultrasound | last_menstrual_period_lmp, Last menstrual period (LMP) | antenatal_examination_of_mother, Antenatal examination of mother | clinical_examination_of_baby, Clinical examination of baby | unknown, Unknown",,,,,,,y,,,,,"Medical History
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+babyenrol_gestage_howcalc_note,babyenrol,,descriptive,"<div class=""rich-text-field-label""><p><em><span style=""font-weight: normal;"">Default value: [babyenrol_gestage_howcalc][previous-instance] (pulled from baby #[previous-instance]) - Please doublecheck and ensure this default value is correct.</span></em></p></div>",,,,,,,"[current-instance] <> 1 and [babyenrol_gestage_howcalc][previous-instance] <> ''",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_eligible_calc,babyenrol,,calc,"Baby is eligible (calc)","if(
+  [babyenrol_loc_birth] <> '' and [babyenrol_weight] <> '' and [babyenrol_gestage_weeks] <> '' and [babyenrol_anom] <> '' and [babyenrol_surv] <> '',
+  if(
+    ([babyenrol_loc_birth] = 'other') or ([babyenrol_loc_birth] = 'unknown') or ([babyenrol_weight] >= 2500 and [babyenrol_gestage_weeks] >= 37) or ([babyenrol_gestage_weeks] < 24) or ([babyenrol_weight] < 500) or ([babyenrol_anom] = 'yes') or ([babyenrol_surv] = 'no'),
+    0,
+    1
+  ),
+  ''
+)",,,,,,,,,,,,"Eligibility
+Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+babyenrol_elig_failure,babyenrol,,descriptive,"<div style=""font-size: 120%; padding: 10px;padding-bottom:0px; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1);""><span style=""font-size: 120%;"">This baby is not eligible for the following reason(s):</span> <ul>{babyenrol_inel_loc}{babyenrol_inel_inc}{babyenrol_inel_ga}{babyenrol_inel_weight}{babyenrol_inel_anom}{babyenrol_inel_surv}</ul> No further data is required.  Please remember reasons for not being included need to be recorded in the screening log.</div>",,,,,,,"[babyenrol_eligible_calc] = '0'",,,,,,"Miscellaneous
+@HIDDEN-PDF @HIDDEN-APP"
+babyenrol_curr_view_is_app,babyenrol,,text,"Custom field to discern if this form is being viewed in the REDCap Mobile App
+(Uses javascript injector module to set value to false)",,,,,,,,y,,,,,"Miscellaneous
+Data Management
+@SETVALUE='1' @HIDDEN-PDF @HIDDEN"
+babyenrol_elig_failure_app,babyenrol,,descriptive,"<div style=""font-size: 120%; padding: 10px;padding-bottom:0px; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1);""><span style=""font-size: 120%;"">This baby is not eligible as it meets one or more of the following conditions:</span> <ul><li>Not born in the labour ward/maternity theatre</li><li>Neither preterm (born at < 37 weeks' gestation) nor low-birth weight (LBW; birth weight < 2.5kg)</li><li>Born at < 24 weeks gestation (GA)</li><li>< 500g birthweight</li><li>Lethal congenital anomaly identified at time of delivery</li><li>No reasonable prospect of survival, according to the attending clinician</li></ul> No further data is required.  Please remember reasons for not being included need to be recorded in the screening log.</div>",,,,,,,"[babyenrol_eligible_calc] = '0' and [babyenrol_curr_view_is_app] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_inel_loc,babyenrol,,descriptive,"<li>Not born in the labour ward/maternity theatre</li>",,,,,,,"[babyenrol_loc_birth] <> '' and ([babyenrol_loc_birth] = 'other' or [babyenrol_loc_birth] = 'unknown')",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_inel_inc,babyenrol,,descriptive,"<li>Neither preterm (born at < 37 weeks' gestation) nor low-birth weight (LBW; birth weight < 2.5kg)</li>",,,,,,,"[babyenrol_weight] <> '' and [babyenrol_gestage_weeks] <> '' and [babyenrol_weight] >= 2500 and [babyenrol_gestage_weeks] >= 37",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_inel_ga,babyenrol,,descriptive,"<li>Born at < 24 weeks gestation (GA)</li>",,,,,,,"[babyenrol_gestage_weeks] <> '' and [babyenrol_gestage_weeks] < 24",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_inel_weight,babyenrol,,descriptive,"<li>< 500g birthweight</li>",,,,,,,"[babyenrol_weight] <> '' and [babyenrol_weight] < 500",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_inel_anom,babyenrol,,descriptive,"<li>Lethal congenital anomaly identified at time of delivery</li>",,,,,,,"[babyenrol_anom] <> '' and [babyenrol_anom] = 'yes'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_inel_surv,babyenrol,,descriptive,"<li>No reasonable prospect of survival, according to the attending clinician </li>",,,,,,,"[babyenrol_surv] <> '' and [babyenrol_surv] = 'no'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyenrol_elig_success,babyenrol,,descriptive,"<div style=""font-size: 120%; padding: 10px; text-align:center;color: rgb(0, 85, 149);border: 4px solid  rgb(0, 85, 149); background-color:  rgba(0, 85, 149, 0.1)""><span style=""font-size: 120%;"">This baby is eligible for the study. Please complete the additional fields below.</div>",,,,,,,"[babyenrol_eligible_calc] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF @SAVEOPTIONS='next'"
+babyenrol_birth_datetime,babyenrol,"<h3 class=""h5"" style=""text-align: center; text-transform: capitalize;"">Additional Information</h3>",text,"Date and time of birth",,,datetime_dmy,"2025-01-01 00:00",now,y,"[babyenrol_eligible_calc] = '1'",,,,,,"Participant Identifier
+Medical History
+Core Outcome
+Secondary Outcome
+@FORCE-MINMAX"
+babyenrol_tob_estimated,babyenrol,,checkbox,"Is the time of birth an estimate?","yes, Yes, the time of birth is an estimate",,,,,,"[babyenrol_eligible_calc] = '1'",,,,,,"Data Management"
+babyenrol_dob,babyenrol,,text,"Date of birth",,,date_dmy,2025-01-01,today,y,,y,,,,,"Derived
+Participant Identifier
+Medical History
+Core Outcome
+Secondary Outcome
+@HIDDEN @HIDDEN-PDF @CALCTEXT(left([babyenrol_birth_datetime_2],10))"
+babyenrol_tob,babyenrol,,text,"Time of birth",,"Please make a best estimate if there is any uncertainty.",time,,,y,,y,,,,,"Derived
+Participant Identifier
+Medical History
+Core Outcome
+Secondary Outcome
+@HIDDEN @HIDDEN-PDF @CALCTEXT(right([babyenrol_birth_datetime_2],5))"
+babyenrol_mode,babyenrol,,radio,"Mode of delivery","elective_caesarean_section, Elective caesarean section | emergency_caesarean_section, Emergency caesarean section | instrumental_vaginal, Instrumental vaginal | spontaneous_vaginal, Spontaneous vaginal | unknown, Unknown",,,,,,"[babyenrol_eligible_calc] = '1'",y,,,,,"Medical History
+@NOMISSING"
+babyenrol_sex,babyenrol,,radio,Sex,"female, Female | male, Male | indeterminate, Indeterminate",,,,,,"[babyenrol_eligible_calc] = '1'",y,,,,,"Participant Identifier
+Medical History"
+babyenrol_resus_need,babyenrol,,radio,"Was the baby resuscitated?","yes, Yes | no, No | unknown, Unknown",,,,,,"[babyenrol_eligible_calc] = '1'",y,,,,,"Medical History
+@NOMISSING"
+babyenrol_resus_used,babyenrol,,checkbox,"Techniques for resuscitation used ","bag_valve_or_mask, Bag, valve or mask | chest_compression, Chest compression | drugs, Drugs | endotracheal_intubation, Endotracheal intubation | stimulation, Stimulation | suction, Suction | supplemental_oxygen, Supplemental oxygen | unknown, Unknown | other, Other (please specify)",{babyenrol_resus_used_oth},,,,,"[babyenrol_resus_need] = 'yes'",y,,,,,"Medical History
+@NONEOFTHEABOVE='unknown' @NOMISSING"
+babyenrol_resus_used_oth,babyenrol,,text,"Other (please specify)",,,,,,,"[babyenrol_resus_used(other)] = '1'",y,,,,,"Medical History"
+babymon_version,babymon,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+babymon_lasteditedby,babymon,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+babymon_title,babymon,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Baby Monitoring - [record-name] Baby #[current-instance]</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babymon_eenc_cord_clamp,babymon,,radio,"Was delayed cord clamping (>1 min) undertaken?","yes, Yes | no, No | unknown, Unknown",,,,,,,y,,,,,"Core Outcome
+Compliance Data
+@NOMISSING"
+babymon_eenc_dried,babymon,,radio,"Was baby dried immediately?","yes, Yes | no, No | unknown, Unknown",,,,,,,y,,,,,"Core Outcome
+Compliance Data
+@NOMISSING"
+babymon_eenc_skin_contact,babymon,,radio,"Was immediate and continuous skin-to-skin contact between the mother and newborn baby initiated (to be continued for at least 90 minutes)?","yes, Yes | no, No | unknown, Unknown",,,,,,,y,,,,,"Core Outcome
+Compliance Data
+@NOMISSING"
+babymon_eenc_breastfeeding,babymon,,radio,"Early exclusive breastfeeding started within 1 hour of birth?","yes, Yes | no, No | unknown, Unknown",,,,,,,y,,,,,"Core Outcome
+Compliance Data
+@NOMISSING"
+babymon_sc_or_i_site,babymon,,text,"Standard Care or Intervention Site? (calc)",,,,,,y,,,,,,,"Unblinding
+Derived
+Data Management
+Compliance Data
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if(
+	[record-dag-id] = '1335' or 
+    [record-dag-id] = '1361' or 
+    [record-dag-id] = '1376' or 
+    [record-dag-id] = '1378' or 
+    [record-dag-id] = '1369' or 
+    [record-dag-id] = '1379' or 
+    [record-dag-id] = '1374' or 
+    [record-dag-id] = '1390' or 
+    [record-dag-id] = '1399' or 
+    [record-dag-id] = '1400' or 
+    [record-dag-id] = '1407' or 
+    [record-dag-id] = '1408' or 
+    [record-dag-id] = '1409' or 
+    [record-dag-id] = '1418' or 
+    [record-dag-id] = '1419' or
+	[record-dag-id] = '1225',
+    'eenc_only',
+	if(
+		# List dag ids of intervention sites here.
+		[record-dag-id] = '1332' or 
+		[record-dag-id] = '1365' or 
+		[record-dag-id] = '1377' or 
+		[record-dag-id] = '1333' or 
+		[record-dag-id] = '1368' or 
+		[record-dag-id] = '1334' or 
+		[record-dag-id] = '1346' or 
+		[record-dag-id] = '1381' or 
+		[record-dag-id] = '1389' or 
+		[record-dag-id] = '1401' or 
+		[record-dag-id] = '1402' or 
+		[record-dag-id] = '1403' or 
+		[record-dag-id] = '1410' or 
+		[record-dag-id] = '1411' or 
+		[record-dag-id] = '1412' or 
+		[record-dag-id] = '1420' or 
+		[record-dag-id] = '1421' or
+		[record-dag-id] = '1220',
+		'eenc_plus_news_heat_care_bundle',
+		''
+	)
+)
+)"
+babymon_impdateindag,babymon,,text,"Imp start date in dag name? (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if(find('Imp. start: ',[record-dag-label]) <> 0,1,0)
+)"
+babymon_impdate_yyyymmdd,babymon,,text,"Imp start date (calc) yyyymmdd 
+for calculating if baby born on/after or before",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([babymon_impdateindag] = '1', 
+concat(
+left(right([record-dag-label],5),4),
+if(find(' Jan 20',[record-dag-label]) <> 0,'01',''),
+if(find(' Feb 20',[record-dag-label]) <> 0,'02',''),
+if(find(' Mar 20',[record-dag-label]) <> 0,'03',''),
+if(find(' Apr 20',[record-dag-label]) <> 0,'04',''),
+if(find(' May 20',[record-dag-label]) <> 0,'05',''),
+if(find(' Jun 20',[record-dag-label]) <> 0,'06',''),
+if(find(' Jul 20',[record-dag-label]) <> 0,'07',''),
+if(find(' Aug 20',[record-dag-label]) <> 0,'08',''),
+if(find(' Sep 20',[record-dag-label]) <> 0,'09',''),
+if(find(' Oct 20',[record-dag-label]) <> 0,'10',''),
+if(find(' Nov 20',[record-dag-label]) <> 0,'11',''),
+if(find(' Dec 20',[record-dag-label]) <> 0,'12',''),
+right(concat('00', trim(mid([record-dag-label], find('Imp. start: ',[record-dag-label])+12, 2))), 2)
+)
+,''))"
+babymon_birthdate_yyyymmdd,babymon,,text,"Baby birth date (calc) yyyymmdd 
+for calculating if baby born on/after or before implementation phase",,,,,,,,,,,,,"Derived 
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if(mid([babyenrol_dob],3,1)='-',
+concat(mid([babyenrol_dob],7,4),mid([babyenrol_dob],4,2),mid([babyenrol_dob],1,2)),
+concat(mid([babyenrol_dob],1,4),mid([babyenrol_dob],6,2),mid([babyenrol_dob],9,2))
+)
+)"
+babymon_bornduringimp,babymon,,text,"Baby born during implementation phase? (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if(
+[babymon_impdate_yyyymmdd] <> '' and ([babymon_birthdate_yyyymmdd] >= [babymon_impdate_yyyymmdd]),
+1,
+0
+)
+)"
+babymon_phase,babymon,,radio,"What was the trial phase at time of birth?
+{babymon_phase_note}","phase_1, PHASE 1: Baseline control phase for all facilities | phase_2, PHASE 2: Early essential newborn care (EENC) training and roll-out for all facilities, followed by randomisation | phase_3a, PHASE 3A: Continuation of EENC provision plus NEWS-HEAT care bundle training and roll-out. | phase_3b, PHASE 3B: EENC + NEWS-HEAT care bundle provision.",,,,,,"[babymon_phase] <> '' or ([babymon_sc_or_i_site] = 'eenc_plus_news_heat_care_bundle' and [babymon_impdate_yyyymmdd] = '')",y,,,,,"Data Management
+@NOMISSING"
+babymon_force_newsheat_q,babymon,,checkbox,,"1, Tick this box to force the question ""Was the NEWS-HEAT chart completed in labour ward/maternity theatre?"" to be shown.",,,,,,"[babymon_force_newsheat_q] <> '' or (
+    [babymon_sc_or_i_site] = '' 
+    or
+    ([babymon_sc_or_i_site] = 'eenc_plus_news_heat_care_bundle'
+    and
+        (
+        [babymon_phase] = 'phase_3a' or [babymon_bornduringimp] = '0'
+        )
+    )
+)",,LV,,,,"Data Management
+@NOMISSING"
+babymon_nh_chart,babymon,,radio,"<div class=""rich-text-field-label""><p>Was the NEWS-HEAT chart completed in labour ward/maternity theatre?</p></div>","yes, Yes | no, No | unknown, Unknown",,,,,y,"[babymon_nh_chart] <> '' or [babymon_force_newsheat_q(1)] = '1' or
+(
+    [babymon_sc_or_i_site] = 'eenc_plus_news_heat_care_bundle' and
+    ([babymon_bornduringimp] = '1' or [babymon_phase] = 'phase_3b')
+)",y,,,,,"Participant Identifier
+Unblinding
+Process Outcome
+Compliance Data
+@NOMISSING"
+babymon_nh_chart_no,babymon,,radio,"If no, why not? ","chart_not_made_available, Chart not made available | staff_providing_care_to_another_baby, Staff providing care to another baby | staff_providing_care_to_mother, Staff providing care to mother | staff_unavailable, Staff unavailable",,,,,y,"[babymon_nh_chart] = 'no'",y,,,,,"Participant Identifier
+Unblinding
+Process Outcome
+Compliance Data
+@NOMISSING"
+temp_version,temp,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+temp_app_lasteditedby,temp,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+temp_title,temp,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Temperature - [record-name] Baby #[current-instance]</h2> <p style=""text-align: center;""><span style=""font-weight: normal;"">Please record temperature reading(s) below, in order of date/time measurement taken.</span></p>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_taken_on_lab_suit,temp,,radio,"Was temperature taken on labour ward/maternity theatre?","yes, Yes | no, No | unknown, Unknown",,,,,,,y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+temp_datetime_1,temp,"<div class=""rich-text-field-label""><div class=""rich-text-field-label""><h2><span style=""font-size: 14pt;"">Temperature (1)</span></h2></div></div>",text,"Date and time of temperature recording",,,datetime_dmy,[babyenrol_dob],[temp_datetime_2],,"[temp_taken_on_lab_suit] = 'yes'",y,,,,,"Core Outcome
+Process Outcome"
+temp_degrees_c_1,temp,,text,Temperature,,"In degrees Celsius",number_1dp,28.0,42.1,,"[temp_taken_on_lab_suit] = 'yes'",y,,,,,"Primary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+temp_degrees_c_1_low_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_1] <> '' and [temp_degrees_c_1] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_degrees_c_1_high_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_1] <> '' and [temp_degrees_c_1] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_action_taken_1,temp,,radio,"Was action taken to warm the baby?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_degrees_c_1] < 36.5 and [temp_taken_on_lab_suit] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+temp_what_action_1,temp,,checkbox,"What action was taken to warm the baby? ","hats, Hats | incubator, Incubator | plastic_wrap, Plastic wrap | radiant_warmer, Radiant warmer | room_temp_25_to_28_deg, Room temperature 25-28 degrees | skin_to_skin, Skin to skin | unknown, Unknown | other, Other (please specify)",{temp_what_action_1_oth},,,,,"[temp_action_taken_1] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+temp_what_action_1_oth,temp,,text,"Other (please specify)",,,,,,,"[temp_what_action_1(other)] = '1'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome"
+temp_2_taken,temp,,radio,"Was temperature measured again?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_taken_on_lab_suit] = 'yes'",y,,,,,"Data Management
+@NOMISSING"
+temp_datetime_2,temp,"<div class=""rich-text-field-label""><div class=""rich-text-field-label""> <h2><span style=""font-size: 14pt;"">Temperature (2)</span></h2> </div></div>",text,"Date and time of temperature recording ",,,datetime_dmy,[temp_datetime_1],[temp_datetime_3],,"[temp_2_taken] = 'yes'",y,,,,,"Core Outcome
+Process Outcome"
+temp_degrees_c_2,temp,,text,Temperature,,"In degrees Celsius",number_1dp,28.0,42.1,,"[temp_2_taken] = 'yes'",y,,,,,"Primary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+temp_degrees_c_2_low_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_2] <> '' and [temp_degrees_c_2] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_degrees_c_2_high_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_2] <> '' and [temp_degrees_c_2] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_action_taken_2,temp,,radio,"Was action taken to warm the baby?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_degrees_c_2] < 36.5 and [temp_2_taken] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+temp_what_action_2,temp,,checkbox,"What action was taken to warm the baby? ","hats, Hats | incubator, Incubator | plastic_wrap, Plastic wrap | radiant_warmer, Radiant warmer | room_temp_25_to_28_deg, Room temperature 25-28 degrees | skin_to_skin, Skin to skin | unknown, Unknown | other, Other (please specify)",{temp_what_action_2_oth},,,,,"[temp_action_taken_2] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+temp_what_action_2_oth,temp,,text,"Other (please specify)",,,,,,,"[temp_what_action_2(other)] = '1'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome"
+temp_3_taken,temp,,radio,"Was temperature measured again?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_2_taken] = 'yes'",y,,,,,"Data Management
+@NOMISSING"
+temp_datetime_3,temp,"<div class=""rich-text-field-label""><div class=""rich-text-field-label""> <h2><span style=""font-size: 14pt;"">Temperature (3)</span></h2> </div></div>",text,"Date and time of temperature recording ",,,datetime_dmy,[temp_datetime_2],[temp_datetime_4],,"[temp_3_taken] = 'yes'",y,,,,,"Core Outcome
+Process Outcome"
+temp_degrees_c_3,temp,,text,Temperature,,"In degrees Celsius",number_1dp,28.0,42.1,,"[temp_3_taken] = 'yes'",y,,,,,"Primary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+temp_degrees_c_3_low_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_3] <> '' and [temp_degrees_c_3] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_degrees_c_3_high_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_3] <> '' and [temp_degrees_c_3] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_action_taken_3,temp,,radio,"Was action taken to warm the baby?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_degrees_c_3] < 36.5 and [temp_3_taken] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+temp_what_action_3,temp,,checkbox,"What action was taken to warm the baby? ","hats, Hats | incubator, Incubator | plastic_wrap, Plastic wrap | radiant_warmer, Radiant warmer | room_temp_25_to_28_deg, Room temperature 25-28 degrees | skin_to_skin, Skin to skin | unknown, Unknown | other, Other (please specify)",{temp_what_action_3_oth},,,,,"[temp_action_taken_3] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+temp_what_action_3_oth,temp,,text,"Other (please specify)",,,,,,,"[temp_what_action_3(other)] = '1'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome"
+temp_4_taken,temp,,radio,"Was temperature measured again?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_3_taken] = 'yes'",y,,,,,"Data Management
+@NOMISSING"
+temp_datetime_4,temp,"<div class=""rich-text-field-label""><div class=""rich-text-field-label""> <h2><span style=""font-size: 14pt;"">Temperature (4)</span></h2> </div></div>",text,"Date and time of temperature recording ",,,datetime_dmy,[temp_datetime_3],[temp_datetime_5],,"[temp_4_taken] = 'yes'",y,,,,,"Core Outcome
+Process Outcome"
+temp_degrees_c_4,temp,,text,Temperature,,"In degrees Celsius",number_1dp,28.0,42.1,,"[temp_4_taken] = 'yes'",y,,,,,"Primary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+temp_degrees_c_4_low_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_4] <> '' and [temp_degrees_c_4] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_degrees_c_4_high_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_4] <> '' and [temp_degrees_c_4] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_action_taken_4,temp,,radio,"Was action taken to warm the baby?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_degrees_c_4] < 36.5 and [temp_4_taken] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+temp_what_action_4,temp,,checkbox,"What action was taken to warm the baby? ","hats, Hats | incubator, Incubator | plastic_wrap, Plastic wrap | radiant_warmer, Radiant warmer | room_temp_25_to_28_deg, Room temperature 25-28 degrees | skin_to_skin, Skin to skin | unknown, Unknown | other, Other (please specify)",{temp_what_action_4_oth},,,,,"[temp_action_taken_4] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+temp_what_action_4_oth,temp,,text,"Other (please specify)",,,,,,,"[temp_what_action_4(other)] = '1'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome"
+temp_5_taken,temp,,radio,"Was temperature measured again?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_4_taken] = 'yes'",y,,,,,"Data Management
+@NOMISSING"
+temp_datetime_5,temp,"<div class=""rich-text-field-label""><div class=""rich-text-field-label""> <h2><span style=""font-size: 14pt;"">Temperature (5)</span></h2> </div></div>",text,"Date and time of temperature recording ",,,datetime_dmy,[temp_datetime_4],[temp_datetime_6],,"[temp_5_taken] = 'yes'",y,,,,,"Core Outcome
+Process Outcome"
+temp_degrees_c_5,temp,,text,Temperature,,"In degrees Celsius",number_1dp,28.0,42.1,,"[temp_5_taken] = 'yes'",y,,,,,"Primary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+temp_degrees_c_5_low_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_5] <> '' and [temp_degrees_c_5] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_degrees_c_5_high_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_5] <> '' and [temp_degrees_c_5] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_action_taken_5,temp,,radio,"Was action taken to warm the baby?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_degrees_c_5] < 36.5 and [temp_5_taken] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+temp_what_action_5,temp,,checkbox,"What action was taken to warm the baby? ","hats, Hats | incubator, Incubator | plastic_wrap, Plastic wrap | radiant_warmer, Radiant warmer | room_temp_25_to_28_deg, Room temperature 25-28 degrees | skin_to_skin, Skin to skin | unknown, Unknown | other, Other (please specify)",{temp_what_action_5_oth},,,,,"[temp_action_taken_5] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+temp_what_action_5_oth,temp,,text,"Other (please specify)",,,,,,,"[temp_what_action_5(other)] = '1'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome"
+temp_6_taken,temp,,radio,"Was temperature measured again?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_5_taken] = 'yes'",y,,,,,"Data Management
+@NOMISSING"
+temp_datetime_6,temp,"<div class=""rich-text-field-label""><div class=""rich-text-field-label""> <h2><span style=""font-size: 14pt;"">Temperature (6)</span></h2> </div></div>",text,"Date and time of temperature recording ",,,datetime_dmy,[temp_datetime_5],[temp_datetime_7],,"[temp_6_taken] = 'yes'",y,,,,,"Core Outcome
+Process Outcome"
+temp_degrees_c_6,temp,,text,Temperature,,"In degrees Celsius",number_1dp,28.0,42.1,,"[temp_6_taken] = 'yes'",y,,,,,"Primary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+temp_degrees_c_6_low_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_6] <> '' and [temp_degrees_c_6] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_degrees_c_6_high_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_6] <> '' and [temp_degrees_c_6] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_action_taken_6,temp,,radio,"Was action taken to warm the baby?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_degrees_c_6] < 36.5 and [temp_6_taken] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+temp_what_action_6,temp,,checkbox,"What action was taken to warm the baby? ","hats, Hats | incubator, Incubator | plastic_wrap, Plastic wrap | radiant_warmer, Radiant warmer | room_temp_25_to_28_deg, Room temperature 25-28 degrees | skin_to_skin, Skin to skin | unknown, Unknown | other, Other (please specify)",{temp_what_action_6_oth},,,,,"[temp_action_taken_6] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+temp_what_action_6_oth,temp,,text,"Other (please specify)",,,,,,,"[temp_what_action_6(other)] = '1'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome"
+temp_7_taken,temp,,radio,"Was temperature measured again?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_6_taken] = 'yes'",y,,,,,"Data Management
+@NOMISSING"
+temp_datetime_7,temp,"<div class=""rich-text-field-label""><div class=""rich-text-field-label""> <h2><span style=""font-size: 14pt;"">Temperature (7)</span></h2> </div></div>",text,"Date and time of temperature recording ",,,datetime_dmy,[temp_datetime_6],[temp_datetime_8],,"[temp_7_taken] = 'yes'",y,,,,,"Core Outcome
+Process Outcome"
+temp_degrees_c_7,temp,,text,Temperature,,"In degrees Celsius",number_1dp,28.0,42.1,,"[temp_7_taken] = 'yes'",y,,,,,"Primary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+temp_degrees_c_7_low_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_7] <> '' and [temp_degrees_c_7] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_degrees_c_7_high_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_7] <> '' and [temp_degrees_c_7] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_action_taken_7,temp,,radio,"Was action taken to warm the baby?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_degrees_c_7] < 36.5 and [temp_7_taken] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+temp_what_action_7,temp,,checkbox,"What action was taken to warm the baby? ","hats, Hats | incubator, Incubator | plastic_wrap, Plastic wrap | radiant_warmer, Radiant warmer | room_temp_25_to_28_deg, Room temperature 25-28 degrees | skin_to_skin, Skin to skin | unknown, Unknown | other, Other (please specify)",{temp_what_action_7_oth},,,,,"[temp_action_taken_7] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+temp_what_action_7_oth,temp,,text,"Other (please specify)",,,,,,,"[temp_what_action_7(other)] = '1'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome"
+temp_8_taken,temp,,radio,"Was temperature measured again?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_7_taken] = 'yes'",y,,,,,"Data Management
+@NOMISSING"
+temp_datetime_8,temp,"<div class=""rich-text-field-label""><div class=""rich-text-field-label""> <h2><span style=""font-size: 14pt;"">Temperature (8)</span></h2> </div></div>",text,"Date and time of temperature recording ",,,datetime_dmy,[temp_datetime_7],today,,"[temp_8_taken] = 'yes'",y,,,,,"Core Outcome
+Process Outcome"
+temp_degrees_c_8,temp,,text,Temperature,,"In degrees Celsius",number_1dp,28.0,42.1,,"[temp_8_taken] = 'yes'",y,,,,,"Primary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+temp_degrees_c_8_low_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_8] <> '' and [temp_degrees_c_8] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_degrees_c_8_high_warn,temp,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[temp_degrees_c_8] <> '' and [temp_degrees_c_8] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+temp_action_taken_8,temp,,radio,"Was action taken to warm the baby?","yes, Yes | no, No | unknown, Unknown",,,,,,"[temp_degrees_c_8] < 36.5 and [temp_8_taken] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+temp_what_action_8,temp,,checkbox,"What action was taken to warm the baby? ","hats, Hats | incubator, Incubator | plastic_wrap, Plastic wrap | radiant_warmer, Radiant warmer | room_temp_25_to_28_deg, Room temperature 25-28 degrees | skin_to_skin, Skin to skin | unknown, Unknown | other, Other (please specify)",{temp_what_action_8_oth},,,,,"[temp_action_taken_8] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+temp_what_action_8_oth,temp,,text,"Other (please specify)",,,,,,,"[temp_what_action_8(other)] = '1'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome"
+temp_error_order,temp,,descriptive,"<div style=""font-size: 120%; padding: 10px; color: rgb(152, 0, 21);border: 4px solid  rgb(152, 0, 21); background-color:  rgba(152, 0, 21, 0.1)"">It appears the temperatures entered are out of order. Please correct this issue. 
+
+For your convenience, here is a summary of the dates/times entered:
+<ol style=""font-weight:normal;""><li>Temperature date/time: [temp_datetime_1]</li><li>Temperature date/time: [temp_datetime_2]</li><li>Temperature date/time: [temp_datetime_3]</li><li>Temperature date/time: [temp_datetime_4]</li><li>Temperature date/time: [temp_datetime_5]</li><li>Temperature date/time: [temp_datetime_6]</li><li>Temperature date/time: [temp_datetime_7]</li><li>Temperature date/time: [temp_datetime_8]</li></ol></div>",,,,,,,"[temp_datetime_1] <> '' and
+(
+([temp_datetime_2] <> '' and ([temp_datetime_1] > [temp_datetime_2])) or
+([temp_datetime_3] <> '' and ([temp_datetime_2] > [temp_datetime_3])) or
+([temp_datetime_4] <> '' and ([temp_datetime_3] > [temp_datetime_4])) or
+([temp_datetime_5] <> '' and ([temp_datetime_4] > [temp_datetime_5])) or
+([temp_datetime_6] <> '' and ([temp_datetime_5] > [temp_datetime_6])) or
+([temp_datetime_7] <> '' and ([temp_datetime_6] > [temp_datetime_7])) or
+([temp_datetime_8] <> '' and ([temp_datetime_7] > [temp_datetime_8]))
+)",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+discharge_version,discharge,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+discharge_app_lasteditedby,discharge,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+discharge_title,discharge,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Discharge from Labour Ward/Maternity Theatre - [record-name] Baby #[current-instance]</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+discharge_where,discharge,,radio,"What was the outcome at the end of the baby's stay in labour ward/maternity theatre?","baby_transferred_to_newborn_unit, Baby transferred to newborn unit | baby_transferred_to_postnatal_ward, Baby transferred to postnatal ward | baby_died, Baby died | unknown, Unknown | other, Other (please specify)",{discharge_where_oth},,,,,,y,,,,,"Secondary Outcome
+Core Outcome
+@NOMISSING"
+discharge_where_oth,discharge,,text,"Other (please specify)",,,,,,,"[discharge_where] = 'other'",y,,,,,"Secondary Outcome
+Core Outcome"
+discharge_babydeath_warn,discharge,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">If the baby died, please complete the baby death form after completing this form.</div>",,,,,,,"[discharge_where] = 'baby_died'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+discharge_datetime,discharge,,text,"Date and time of discharge from labour ward/maternity theatre ",,,datetime_dmy,[babyenrol_dob],today,,"[discharge_where] = 'baby_transferred_to_newborn_unit' or [discharge_where] = 'baby_transferred_to_postnatal_ward' or [discharge_where] = 'other'",y,,,,,"Secondary Outcome
+Core Outcome
+@FORCE-MINMAX"
+discharge_temp_check,discharge,,radio,"Was temperature checked at time of discharge from labour ward/maternity theatre? ","yes, Yes | no, No | unknown, Unknown",,,,,,"[discharge_where] = 'baby_transferred_to_newborn_unit' or [discharge_where] = 'baby_transferred_to_postnatal_ward' or [discharge_where] = 'other'",y,,,,,"Secondary Outcome
+Core Outcome
+Compliance Data
+@NOMISSING"
+discharge_temp,discharge,,text,"Temperature at discharge from labour ward/maternity theatre",,"In degrees Celsius",number_1dp,28.0,42.1,,"[discharge_temp_check] = 'yes'",y,,,,,"Primary Outcome
+Secondary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+discharge_temp_low_warn,discharge,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[discharge_temp] <> '' and [discharge_temp] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+discharge_temp_high_warn,discharge,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[discharge_temp] <> '' and [discharge_temp] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+discharge_admission_datetime,discharge,,text,"Date and time of admission to next point of care",,,datetime_dmy,[discharge_datetime],today,,"[discharge_where] = 'baby_transferred_to_newborn_unit' or [discharge_where] = 'baby_transferred_to_postnatal_ward' or [discharge_where] = 'other'",y,,,,,"Secondary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+discharge_diagnosis,discharge,,radio,"Primary diagnosis on admission (for those babies transferred to the newborn unit) - in addition to prematurity or low birth weight. ","anaemia, Anaemia | birth_asphyxia, Birth asphyxia | jaundice, Jaundice | meconium_aspiration, Meconium aspiration | meningitis, Meningitis | multiple_delivery, Multiple delivery | newborn_respiratory_distress_syndrome, Newborn respiratory distress syndrome | neonatal_sepsis, Neonatal sepsis |no_additional_diagnoses, No additional diagnoses | unknown, Unknown | other, Other (please specify)",{discharge_diagnosis_oth},,,,,"[discharge_where] = 'baby_transferred_to_newborn_unit'",y,,,,,"Secondary Outcome
+Core Outcome
+@NOMISSING"
+discharge_diagnosis_oth,discharge,,text,"Other (please specify)",,,,,,,"[discharge_diagnosis] = 'other'",y,,,,,"Secondary Outcome
+Core Outcome"
+discharge_asphyxia,discharge,,radio,"Please select severity of asphyxia","severe_moderate, Severe/moderate | mild, Mild | unknown, Unknown",,,,,,"[discharge_diagnosis] = 'birth_asphyxia'",y,,,,,"Secondary Outcome
+Core Outcome
+@NOMISSING"
+discharge_admission_check,discharge,,radio,"Was temperature checked at time of admission to the next point of care? ","yes, Yes | no, No | unknown, Unknown",,,,,,"[discharge_where] = 'baby_transferred_to_newborn_unit' or [discharge_where] = 'baby_transferred_to_postnatal_ward' or [discharge_where] = 'other'",y,,,,,"Secondary Outcome
+Core Outcome
+Compliance Data
+@NOMISSING"
+discharge_admission_temp,discharge,,text,"Temperature at time of admission",,"In degrees Celsius",number_1dp,28.0,42.1,,"[discharge_admission_check] = 'yes'",y,,,,,"Primary Outcome
+Secondary Outcome
+Core Outcome
+Process Outcome
+@FORCE-MINMAX"
+discharge_admission_temp_low_warn,discharge,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is < 30.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[discharge_admission_temp] <> '' and [discharge_admission_temp] < 30.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+discharge_admission_temp_high_warn,discharge,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">The temperature entered is > 41.0 degrees Celsius. Please doublecheck this value and ensure it is correct as it is plausible, but unlikely. </div>",,,,,,,"[discharge_admission_temp] <> '' and [discharge_admission_temp] > 41.0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+discharge_action,discharge,,radio,"Was action taken to warm the baby?","yes, Yes | no, No | unknown, Unknown",,,,,,"[discharge_admission_temp] < 36.5",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING"
+discharge_warm,discharge,,checkbox,"What actions were taken to warm the baby?  ","hats, Hats | incubator, Incubator | plastic_wrap, Plastic wrap | radiant_warmer, Radiant warmer | room_temp_25_to_28_deg, Room temperature 25-28 degrees | skin_to_skin, Skin to skin | unknown, Unknown | other, Other (please specify)",{discharge_warm_oth},,,,,"[discharge_admission_temp] < 36.5 and [discharge_action] = 'yes'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome
+@NOMISSING @NONEOFTHEABOVE='unknown'"
+discharge_warm_oth,discharge,,text,"Other (please specify)",,,,,,,"[discharge_warm(other)] = '1'",y,,,,,"Compliance Data
+Core Outcome
+Process Outcome"
+discharge_bs_check,discharge,,radio,"Was the baby's blood sugar checked as part of routine clinical care? ","yes, Yes | no, No | unknown, Unknown",,,,,,"[discharge_where] = 'baby_transferred_to_newborn_unit' or [discharge_where] = 'baby_transferred_to_postnatal_ward' or [discharge_where] = 'other'",y,,,,,"Secondary Outcome
+Core Outcome
+Process Outcome
+@NOMISSING"
+discharge_blood_sugar,discharge,,text,"Baby's blood sugar reading (checked as part of routine clinical care)",,mmol/L,number_1dp,,,,"[discharge_bs_check] = 'yes'",y,,,,,"Secondary Outcome
+Core Outcome
+Process Outcome"
+babyoutcome_version,babyoutcome,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+babyoutcome_app_lasteditedby,babyoutcome,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+babyoutcome_title,babyoutcome,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Baby Outcome at Exit - [record-name] Baby #[current-instance]</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyoutcome_antibiotics,babyoutcome,,radio,"Did the baby receive any antibiotics in first 72 hours after birth? ","yes, Yes | no, No | unknown, Unknown",,,,,,,y,,,,,"Secondary Outcome
+Core Outcome
+@NOMISSING"
+babyoutcome_in_hosp_day_7,babyoutcome,,radio,"Was the baby still in hospital on day 7?","yes, Yes | no, No",,,,,,,y,,,,,"Data Management
+@NOMISSING"
+babyoutcome_hosp_exit,babyoutcome,,radio,"Outcome at exit from study","discharged_home, Discharged home | transferred_to_another_hospital, Transferred to another hospital | died, Died",,,,,,"[babyoutcome_in_hosp_day_7] = 'no'",y,,,,,"Secondary Outcome
+Core Outcome
+@NOMISSING"
+babyoutcome_babydeath_warn,babyoutcome,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">If the baby died, please complete the baby death form after completing this form.</div>",,,,,,,"[babyoutcome_hosp_exit] = 'died'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babyoutcome_discharge_date,babyoutcome,,text,"Date of discharge to either home or other hospital",,,date_dmy,[babyenrol_dob],today,,"[babyoutcome_hosp_exit] = 'discharged_home' or [babyoutcome_hosp_exit] = 'transferred_to_another_hospital'",y,,,,,"Secondary Outcome
+Core Outcome
+@FORCE-MINMAX"
+babyoutcome_final_diag,babyoutcome,,radio,"Final diagnosis at discharge -  in addition to prematurity or low birth weight. ","anaemia, Anaemia | birth_asphyxia, Birth asphyxia | jaundice, Jaundice | meconium_aspiration, Meconium aspiration | meningitis, Meningitis | multiple_delivery, Multiple delivery | newborn_respiratory_distress_syndrome, Newborn respiratory distress syndrome | neonatal_sepsis, Neonatal sepsis |no_additional_diagnoses, No additional diagnoses | unknown, Unknown | other, Other (please specify)",{babyoutcome_diag_oth},,,,,"[babyoutcome_hosp_exit] = 'discharged_home' or [babyoutcome_hosp_exit] = 'transferred_to_another_hospital'",y,,,,,"Secondary Outcome
+Core Outcome
+@NOMISSING"
+babyoutcome_diag_oth,babyoutcome,,text,"Other (please specify)",,,,,,,"[babyoutcome_final_diag] = 'other'",y,,,,,"Secondary Outcome
+Core Outcome"
+babyoutcome_asphyxia,babyoutcome,,radio,"Please select severity of asphyxia","severe_moderate, Severe/moderate | mild, Mild | unknown, Unknown",,,,,,"[babyoutcome_final_diag] = 'birth_asphyxia'",y,,,,,"Secondary Outcome
+Core Outcome
+@NOMISSING"
+babyoutcome_bf,babyoutcome,,radio,"At the time of discharge was the baby exclusively breastfeeding?","yes, Yes | no, No",,,,,,"[babyoutcome_hosp_exit] = 'discharged_home' or [babyoutcome_hosp_exit] = 'transferred_to_another_hospital'",y,,,,,"Secondary Outcome
+Core Outcome"
+babyoutcome_feeding_day8,babyoutcome,,checkbox,"How was the baby being fed? Select all that apply.","mothers_own_breast_milk, Mothers own breast milk | other_breast_milk, Other breast milk (e.g. donor milk) | formula_milk, Formula milk | other_type_of_milk, Other type of milk | unknown, Unknown | something_else, Something else (please specify)",{babyoutcome_feeding_anyels},,,,,"([babyoutcome_hosp_exit] = 'discharged_home' or [babyoutcome_hosp_exit] = 'transferred_to_another_hospital') and [babyoutcome_bf] = 'no'",y,,,,,"Secondary Outcome
+Core Outcome
+@NONEOFTHEABOVE='unknown' @NOMISSING"
+babyoutcome_feeding_anyels,babyoutcome,,text,"Something else (please specify)",,,,,,,"[babyoutcome_feeding_day8(something_else)] = '1'",y,,,,,"Secondary Outcome
+Core Outcome"
+babyoutcome_days_care_lv1,babyoutcome,"<div class=""rich-text-field-label""><div class=""rich-text-field-label""><p>During the baby's initial hospital admission after birth, how many of the first 7 days after birth did the baby receive the following level(s) of neonatal care?<br><br><em><span style=""font-weight: normal;"">Please include the TOTAL number of days for each level of care. The highest level of care received should be recorded for any partial days. You do not need to include any subsequent neonatal care received in subsequent hospital admissions, e.g. if the baby was discharged home and then readmitted to hospital.</span></em></p></div></div>",text,"<div class=""rich-text-field-label""><p>Level 1 (special care)</p></div>",,"Enter a number between 0 and 7.",number,0,7,,,y,,,,,"Secondary Outcome
+Core Outcome
+@FORCE-MINMAX"
+babyoutcome_days_care_lv2,babyoutcome,,text,"<div class=""rich-text-field-label""><p>Level 2 (intermediate)</p></div>",,"Enter a number between 0 and 7.",number,0,7,,,y,,,,,"Secondary Outcome
+Core Outcome
+@FORCE-MINMAX"
+babyoutcome_days_care_lv3,babyoutcome,,text,"<div class=""rich-text-field-label""><p>Level 3 (NICU)</p></div>",,"Enter a number between 0 and 7.",number,0,7,,,y,,,,,"Secondary Outcome
+Core Outcome
+@FORCE-MINMAX"
+telephone_version,telephone,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+telephone_app_lasteditedby,telephone,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+telephone_title,telephone,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Day 8 Telephone Call - [record-name] Baby #[current-instance]</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+telephone_dishcarged_7,telephone,,radio,"Has the baby been discharged prior to 7 days after birth?","yes, Yes | no, No | unknown, Unknown",,,,,,,y,,,,,"Core Outcome
+Secondary Outcome
+Data Management
+@NOMISSING"
+telephone_consent_day8,telephone,,radio,"Was consent obtained to telephone the Mother on day 8?","yes, Yes | no, No | unknown, Unknown",,,,,,"[telephone_dishcarged_7] = 'yes'",y,,,,,"Compliance Data
+Process Outcome
+Data Management
+@NOMISSING"
+telephone_consent_day8_no,telephone,,radio,"If no, why? ","discharged_prior_to_consent_discussion, Discharged prior to consent discussion | staff_error, Staff error (e.g. forgot) | unknown, Unknown",,,,,,"[telephone_consent_day8] = 'no'",y,,,,,"Compliance Data
+Process Outcome
+Regulatory Data
+@NOMISSING"
+telephone_dob_plus8days,telephone,,text,"8 days after date of birth (date day 8 telephone call due, if consented)",,,date_dmy,,,,,,,,,,"Data Management
+@HIDDEN @CALCDATE([babyenrol_dob], 8,'d')"
+telephone_call,telephone,"<h3 class=""h5"" style=""text-align: center; text-transform: capitalize;"">Date telephone call is due: [telephone_dob_plus8days]</h3>",radio,"Did the day 8 telephone call take place?","yes, Yes | no, No | unknown, Unknown",,,,,,"[telephone_consent_day8] = 'yes'",y,,,,,"Compliance Data
+Process Outcome
+Data Management
+@NOMISSING"
+telephone_call_no,telephone,,radio,"If no, why not?","withdrew, Withdrew | unable_to_contact, Unable to contact | staff_error, Staff error | unknown, Unknown | other, Other (please specify)",{telephone_call_no_oth},,,,,"[telephone_call] = 'no'",y,,,,,"Compliance Data
+Data Management
+@NOMISSING"
+telephone_call_no_oth,telephone,,text,"Other (please specify)",,,,,,,"[telephone_call_no] = 'other'",y,,,,,"Compliance Data
+Data Management"
+telephone_day8,telephone,,radio,"Outcome of baby at day 8 ","alive_at_home, Alive at home | alive_at_another_hospital, Alive at another hospital | died, Died | unknown, Unknown",,,,,,"[telephone_consent_day8] = 'yes' and [telephone_call] = 'yes'",y,,,,,"Secondary Outcome
+Core Outcome
+Data Management
+@NOMISSING"
+telephone_babydeath_warn,telephone,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: #843a00; border: 4px solid  #843a00; background-color: rgba(132, 58, 0, 0.1);"">If the baby died, please complete the baby death form after completing this form.</div>",,,,,,,"[telephone_day8] = 'died'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babydeath_version,babydeath,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+babydeath_lasteditedby,babydeath,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+babydeath_title,babydeath,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Baby Death - [record-name] Baby #[current-instance]</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+babydeath_date,babydeath,,text,"Date of death",,,date_dmy,[babyenrol_dob],today,,,y,,,,,"Secondary Outcome
+Core Outcome
+@FORCE-MINMAX"
+babydeath_time,babydeath,,text,"Time of death",,,time,,,,,y,,,,,"Secondary Outcome
+Core Outcome
+@HIDEBUTTON"
+babydeath_datetime,babydeath,,text,"Date and time of death",,,datetime_dmy,,,,,y,,,,,"Derived
+Secondary Outcome
+Core Outcome
+@HIDDEN @CALCTEXT(concat([babydeath_date],' ',[babydeath_time]))"
+babydeath_error_order,babydeath,,descriptive,"<div style=""font-size: 120%; padding: 10px; color: rgb(152, 0, 21);border: 4px solid  rgb(152, 0, 21); background-color:  rgba(152, 0, 21, 0.1)"">According to the data entered, the baby's death occurred before birth. Please correct this issue.
+
+Date/time of birth: <span style=""font-weight:normal;"">[babyenrol_birth_datetime] <em>(from Baby Enrolment form)</em></span>
+Date/time of death: <span style=""font-weight:normal;"">[babydeath_datetime]</span></div>",,,,,,,"[babyenrol_birth_datetime] > [babydeath_datetime] and [babydeath_date] <> '' and [babydeath_time] <> ''",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+admin_version,administration_form_nctu_only,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+admin_title,administration_form_nctu_only,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Administration Form NCTU Only - [record-name] Baby #[current-instance]</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+admin_complete,administration_form_nctu_only,,radio,"Are all instruments complete for this record?","yes, Yes | no, No",,,,,,,y,,,,,"Data Management"
+admin_resolve,administration_form_nctu_only,,radio,"Have all data queries been resolved for this record?","yes, Yes | no, No",,,,,,"[admin_complete] = 'yes'",y,,,,,"Data Management"
+admin_locked,administration_form_nctu_only,,radio,"Have all completed instruments been soft locked for this record?","yes, Yes | no, No",,,,,,"[admin_resolve] = 'yes'",y,,,,,"Data Management"
+admin_all_comp,administration_form_nctu_only,,descriptive,"<div class=""rich-text-field-label""><p><span style=""background-color: #eccafa;"">Remember to mark this instrument 'complete' when done and soft lock</span></p></div>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+arm2_site_shortlabel,screenlog,,text,"Site Label (shortened)",,,,,,,,y,,,,,"Derived
+Miscellaneous
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if(
+find (' (', [record-dag-label]) <> 0,
+left([record-dag-label],find (' (', [record-dag-label])-1),
+[record-dag-label])
+)"
+ref_id_arm2_dag_pfx,screenlog,,text,"Reference Number - DAG Prefix",,,,,,,,,,,,,"Derived
+Miscellaneous
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if(left([record-dag-label],2)='' and [screenlog_complete] = '',
+    left([user-dag-label],2),
+    left([record-dag-label],2)
+)
+)"
+ref_id_arm2_len_valid,screenlog,,calc,"Reference Number is a valid length?","if(
+    length([ref_id]) = 13,
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm2_pfx_valid,screenlog,,calc,"Reference Number prefix is valid?","if(
+    left([ref_id], 5) = concat(""SL-"", left([record-dag-label], 2)),
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm2_sp_valid,screenlog,,calc,"Reference Number has dash separator between DAG prefix and number?","if(
+     mid([ref_id], 6, 1) = '-',
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm2_mo_valid,screenlog,,calc,"Reference Number suffix (month) is valid?","if(
+    mid([ref_id], 7, 3) = ""Jan"" or mid([ref_id], 7, 3) = ""Feb"" or mid([ref_id], 7, 3) = ""Mar"" or mid([ref_id], 7, 3) = ""Apr"" or mid([ref_id], 7, 3) = ""May"" or mid([ref_id], 7, 3) = ""Jun"" or mid([ref_id], 7, 3) = ""Jul"" or mid([ref_id], 7, 3) = ""Aug"" or mid([ref_id], 7, 3) = ""Sep"" or mid([ref_id], 7, 3) = ""Oct"" or mid([ref_id], 7, 3) = ""Nov"" or mid([ref_id], 7, 3) = ""Dec"",
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm2_mo,screenlog,,calc,"Reference Number suffix (month)","if([ref_id_arm2_mo_valid] = '1', 
+concat(
+    if(mid([ref_id], 7, 3) = ""Jan"",'1',''),
+    if(mid([ref_id], 7, 3) = ""Feb"",'2',''),
+    if(mid([ref_id], 7, 3) = ""Mar"",'3',''),
+    if(mid([ref_id], 7, 3) = ""Apr"",'4',''),
+    if(mid([ref_id], 7, 3) = ""May"",'5',''),
+    if(mid([ref_id], 7, 3) = ""Jun"",'6',''),
+    if(mid([ref_id], 7, 3) = ""Jul"",'7',''),
+    if(mid([ref_id], 7, 3) = ""Aug"",'8',''),
+    if(mid([ref_id], 7, 3) = ""Sep"",'9',''),
+    if(mid([ref_id], 7, 3) = ""Oct"",'10',''),
+    if(mid([ref_id], 7, 3) = ""Nov"",'11',''),
+    if(mid([ref_id], 7, 3) = ""Dec"",'12','')
+)
+, '')",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm2_yr_valid,screenlog,,calc,"Reference Number suffix (year) is valid?","if(
+    right([ref_id], 4) = 2025 or right([ref_id], 4) = 2026 or right([ref_id], 4) = 2027 or right([ref_id], 4) = 2028 or right([ref_id], 4) = 2029 or right([ref_id], 4) = 2030 or right([ref_id], 4) = 2031 or right([ref_id], 4) = 2032 or right([ref_id], 4) = 2033 or right([ref_id], 4) = 2034,
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm2_yr,screenlog,,calc,"Reference Number suffix (year)","if([ref_id_arm2_yr_valid] = '1', right([ref_id], 4), '')",,,,,,,,,,,,"Miscellaneous
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm2_valid,screenlog,,calc,"Reference Number is valid?","if(
+    [ref_id_arm2_len_valid] = '1' and [ref_id_arm2_pfx_valid] = '1' and [ref_id_arm2_sp_valid] = '1' and [ref_id_arm2_mo_valid] = '1' and [ref_id_arm2_yr_valid] = '1',
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm2_err,screenlog,,descriptive,"<div style=""text-align: center; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1); padding: 10px;""> <h5 style=""font-weight: 900;"">Sorry, the record must be assigned to a data access group/site and the Reference Number must follow the correct format, e.g.: SL-01-Jan2026.</h5> </div> ",,,,,,,"[record-dag-name] = '' and [ref_id_arm2_valid] = '0'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+ref_id_arm2_err_nodag,screenlog,,descriptive,"<div style=""text-align: center; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1); padding: 10px;""> <h5 style=""font-weight: 900;"">Sorry, the record must be assigned to a data access group/site.</h5> </div> ",,,,,,,"[record-dag-name] = '' and [ref_id_arm2_valid] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+ref_id_arm2_err_format,screenlog,,descriptive,"<div style=""text-align: center; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1); padding: 10px;""> <h5 style=""font-weight: 900;"">Sorry, the Reference Number does not follow the correct format, e.g.: SL-[ref_id_arm2_dag_pfx]-Jan2026.</h5> </div> 
+<h5 style=""text-align:center;"">Please try again with a valid Reference Number, which will be:</h5> <table style=""width: 100%; height: 75.2778px; background-color: #ffffff; border-style: none; border-image: initial; margin-left: auto; margin-right: auto;"" border=""0""> <colgroup> <col style=""width: 45.5%;""> <col style=""width: 9%;""> <col style=""width: 45.5%;""> </colgroup> <tbody> <tr style=""height: 32.6389px;""> <td style=""text-align: right; border-right: 1px dashed  rgb(186, 55, 42); padding: 3px; border-bottom: 2px solid rgb(186, 55, 42);""> <h5 style=""font-weight: 900;"">SL-[ref_id_arm2_dag_pfx]</h5> </td> <td style=""text-align: center; border-right: 1px dashed  rgb(186, 55, 42); padding: 3px; border-bottom: 2px solid rgb(186, 55, 42);""> <h5 style=""font-weight: 900;"">-</h5> </td> <td style=""text-align: left; padding: 3px; border-bottom: 2px solid rgb(186, 55, 42);""> <h5 style=""font-weight: 900;"">Mon####</h5> </td> </tr> <tr style=""height: 42.6389px;""> <td style=""text-align: right; border-right: 1px dashed  rgb(186, 55, 42); padding: 3px;""> <h6 style=""font-weight: normal;""> <em>'SL-', followed by number prefix for the record's data access group, [arm2_site_shortlabel]</em> </h6> </td> <td style=""text-align: center; border-right: 1px dashed  rgb(186, 55, 42); padding: 3px;""> <h6 style=""font-weight: normal;""> <em>A dash</em> </h6> </td> <td style=""text-align: left; padding: 3px;""> <h6 style=""font-weight: normal;""> <em>Month/year of the screening log - Month formatted as 3 letters with first letter capitalized. Year as 4-digit year.</em> </h6> </td> </tr> </tbody> </table> 
+<h5 style=""text-align:center;"">Valid Reference Number builder:</h5> <table style=""height: 99.4445px; background-color: #ffffff; border-style: none; border-image: initial; margin-left: auto; margin-right: auto;"" border=""0""> <tbody> <tr style=""height: 24.8611px;""> <td style=""text-align: right; padding: 3px;border-right: 1px dashed  rgb(186, 55, 42); border-bottom: 2px dashed rgb(186, 55, 42);""> <h6 style=""font-weight: 900;"">Select the month:</h6>  </td> <td style=""text-align: left; padding: 3px; border-bottom: 2px dashed rgb(186, 55, 42);""> <h6 style=""font-weight: 900;"">{ref_id_arm2_builder_mo}</h6> </td> </tr><tr style=""height: 24.8611px;""> <td style=""text-align: right; padding: 3px;border-right: 1px dashed  rgb(186, 55, 42); border-bottom: 2px solid rgb(186, 55, 42);""> <h6 style=""font-weight: 900;"">Select the year:</h6> </h6> </td> <td style=""text-align: left; padding: 3px; border-bottom: 2px solid rgb(186, 55, 42);""> <h6 style=""font-weight: 900;"">{ref_id_arm2_builder_yr}</h6> </td> </tr> <tr style=""height: 24.8611px;""> <td style=""text-align: right; padding: 3px;border-right: 1px dashed  rgb(186, 55, 42);""> <h6 style=""font-weight: 900;"">Result:</h6> <h6 style=""margin-top: 0px; font-weight: normal;""> <em>Use this when creating a new record</em> </h6> </td> <td style=""text-align: left; padding: 3px;""> <h6 style=""font-weight: 900;"">{ref_id_arm2_builder_rslt}</h6> </td> </tr> </tbody> </table>",,,,,,,"[record-dag-name] <> '' and [ref_id_arm2_valid] = '0'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+ref_id_arm2_builder_mo,screenlog,,dropdown,Month,"Jan, Jan | Feb, Feb | Mar, Mar | Apr, Apr | May, May | Jun, Jun | Jul, Jul | Aug, Aug | Sep, Sep | Oct, Oct | Nov, Nov | Dec, Dec",,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+ref_id_arm2_builder_yr,screenlog,,dropdown,Year,"2025, 2025 | 2026, 2026 | 2027, 2027 | 2028, 2028 | 2029, 2029 | 2030, 2030 | 2031, 2031 | 2032, 2032 | 2033, 2033 | 2034, 2034",,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+ref_id_arm2_builder_rslt,screenlog,,text,Result,,,,,,,,,,,,,"Derived
+Miscellaneous
+@HIDDEN-PDF @CALCTEXT(
+if(
+    [ref_id_arm2_builder_mo] <> '' and [ref_id_arm2_builder_yr] <> '',
+    concat(
+        'SL-',
+        [ref_id_arm2_dag_pfx], 
+        '-', 
+        [ref_id_arm2_builder_mo],
+        [ref_id_arm2_builder_yr]
+    
+    ),
+    '')
+)"
+screenlog_version,screenlog,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+screenlog_app_lasteditedby,screenlog,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+screenlog_title,screenlog,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Screening Log - [screenlog_month] [screenlog_year]</h2>",,,,,,,"[ref_id_arm2_valid] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+screenlog_month,screenlog,,dropdown,Month:,"1, Jan | 2, Feb | 3, Mar | 4, Apr | 5, May | 6, Jun | 7, Jul | 8, Aug | 9, Sep | 10, Oct | 11, Nov | 12, Dec",,,,,,,y,,,,,"Data Management
+@NOMISSING
+@READONLY @SETVALUE='[ref_id_arm2_mo]' @HIDDEN"
+screenlog_year,screenlog,,dropdown,Year:,"2025, 2025 | 2026, 2026 | 2027, 2027 | 2028, 2028 | 2029, 2029 | 2030, 2030 | 2031, 2031 | 2032, 2032 | 2033, 2033 | 2034, 2034",,,,,,,y,,,,,"Data Management
+@NOMISSING
+@READONLY @SETVALUE='[ref_id_arm2_yr]' @HIDDEN"
+screenlog_screen_name,screenlog,,text,"Calculated field for field name",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([screenlog_month] <> '' and [screenlog_year] <> '', 
+if(right([record-name],4) = [screenlog_year] and 
+(
+(mid([record-name],7,3) = 'Jan' and [screenlog_month] = 1) or 
+(mid([record-name],7,3) = 'Feb' and [screenlog_month] = 2) or 
+(mid([record-name],7,3) = 'Mar' and [screenlog_month] = 3) or 
+(mid([record-name],7,3) = 'Apr' and [screenlog_month] = 4) or 
+(mid([record-name],7,3) = 'May' and [screenlog_month] = 5) or 
+(mid([record-name],7,3) = 'Jun' and [screenlog_month] = 6) or 
+(mid([record-name],7,3) = 'Jul' and [screenlog_month] = 7) or 
+(mid([record-name],7,3) = 'Aug' and [screenlog_month] = 8) or
+(mid([record-name],7,3) = 'Sep' and [screenlog_month] = 9) or 
+(mid([record-name],7,3) = 'Oct' and [screenlog_month] = 10) or 
+(mid([record-name],7,3) = 'Nov' and [screenlog_month] = 11) or 
+(mid([record-name],7,3) = 'Dec' and [screenlog_month] = 12) 
+), 1, 0), ''))"
+screenlog_cur_date,screenlog,,text,"current date (calc to pipe @TODAY, seemingly prevents some issues in the app)",,,,,,,,,,,,,"Data Management
+Miscellaneous
+@HIDDEN @HIDDEN-PDF @TODAY"
+screenlog_fut_date,screenlog,,text,"screening first date of selected month & year",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if([screenlog_month] <> '' and [screenlog_year] <> '',
+concat([ref_id_arm2_yr], if( [ref_id_arm2_mo] < 10 , '-0', '-'),[ref_id_arm2_mo], '-', '01')
+,'')
+)"
+screenlog_cur_num,screenlog,,text,"current date, numeric, yyyymm",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(concat(mid([screenlog_cur_date],1,4),mid([screenlog_cur_date],6,2)))"
+screenlog_fut_num,screenlog,,text,"selected date, numeric, yyyymm",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(concat([ref_id_arm2_yr],if( [ref_id_arm2_mo] < 10 , '0', ''),[ref_id_arm2_mo]))"
+screenlog_err_currentmo,screenlog,,descriptive,"<div style=""font-size: 110%; padding: 10px; color: #980015; border: 4px solid #980015; background-color: rgba(152, 0, 21, 0.1); text-align: center;"">Cannot enter screening log data for current month [screenlog_month] [screenlog_year] - data can only be entered after the end of the month.</div>",,,,,,,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] = [screenlog_fut_num]",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+screenlog_err_futuremo,screenlog,,descriptive,"<div style=""font-size: 110%; padding: 10px; color: #980015; border: 4px solid #980015; background-color: rgba(152, 0, 21, 0.1); text-align: center;"">Cannot enter screening log data for future month [screenlog_month] [screenlog_year] - data can only be entered after the end of the month.</div>",,,,,,,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] < [screenlog_fut_num]",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+screenlog_num_totalbirths,screenlog,"You should use the Baby Identification Log to help complete this form. ",text,"Total number of inborn live births (any gestation)",,,number,0,4000,,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num]",y,,,,,"Primary Outcome Not Primary Analysis
+@FORCE-MINMAX"
+screenlog_num_pretermlbw,screenlog,,text,"Total number of preterm and/or low birth weight births (less than 37 weeks and/or less than 2.5kg)",,,number,0,[screenlog_total_births],,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num]",y,,,,,"Miscellaneous
+@FORCE-MINMAX"
+screenlog_num_eligible,screenlog,,text,"Total number of babies eligible for inclusion",,,number,0,[screenlog_num_pretermlbw],,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num]",y,,,,,"Miscellaneous
+@FORCE-MINMAX"
+screenlog_num_indb,screenlog,,text,"Total number of babies entered into the NEWS-HEAT database",,,number,0,[screenlog_num_eligible],,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num]",y,,,,,"Miscellaneous
+@FORCE-MINMAX"
+screenlog_notindb_calc,screenlog,,calc,"Number of ineligible babies (calc)","[screenlog_num_totalbirths] - [screenlog_num_indb]",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN"
+screenlog_num_congenital,screenlog,"Reason if not eligible OR not entered into the NEWS-HEAT database (number per reason)",text,"Congenital anomalies ",,,number,0,[screenlog_num_notindb],,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num]",y,,,,,"Miscellaneous
+@FORCE-MINMAX"
+screenlog_num_noprospect,screenlog,,text,"Babies born with no reasonable prospect of survival 
+(e.g. < 24 weeks gestational age (GA), < 500g birthweight)",,,number,0,[screenlog_num_notindb],,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num]",y,,,,,"Miscellaneous
+@FORCE-MINMAX"
+screenlog_num_nostaff,screenlog,,text,"No staff available",,,number,0,[screenlog_num_notindb],,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num]",y,,,,,"Miscellaneous
+@FORCE-MINMAX"
+screenlog_num_forgot,screenlog,,text,"Staff forgot",,,number,0,[screenlog_num_notindb],,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num]",y,,,,,"Miscellaneous
+@FORCE-MINMAX"
+screenlog_num_other,screenlog,,text,"Other reasons",,{screenlog_num_other_specify_lbl}{screenlog_num_other_specify},number,0,[screenlog_num_notindb],,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num]",y,,,,,"Miscellaneous
+@FORCE-MINMAX"
+screenlog_sum_notindb_calc,screenlog,,calc,"Number of ineligible babies included below ""Reason if not eligible OR not entered into the NEWS-HEAT database (number per reason)"" (calc)","[screenlog_num_congenital] + [screenlog_num_noprospect] + [screenlog_num_nostaff] + [screenlog_num_forgot] + [screenlog_num_other]",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN"
+screenlog_num_other_specify_lbl,screenlog,,descriptive,"Please specify:",,,,,,,"[ref_id_arm2_valid] = '1' and [screenlog_num_other] > 0",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+screenlog_num_other_specify,screenlog,,notes,"Other reasons: Please specify",,,,,,,"[ref_id_arm2_valid] = '1' and [screenlog_num_other] > 0",y,,,,,Miscellaneous
+screenlog_error_sum,screenlog,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: rgb(152, 0, 21);border: 4px solid  rgb(152, 0, 21); background-color:  rgba(152, 0, 21, 0.1)"">According to the data entered, the number of babies born but not entered into the NEWS-HEAT database is [screenlog_notindb_calc]. However, the numbers entered under ""Reason if not eligible OR not entered into the NEWS-HEAT database (number per reason)"" add up to [screenlog_sum_notindb_calc]. Please correct this discrepancy.</div>",,,,,,,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num] and [screenlog_num_totalbirths] <> '' and [screenlog_num_pretermlbw] <> '' and [screenlog_num_eligible] <> '' and [screenlog_num_indb] <> '' and [screenlog_num_congenital] <> '' and [screenlog_num_noprospect] <> '' and [screenlog_num_nostaff] <> '' and [screenlog_num_forgot] <> '' and [screenlog_num_other] <> '' and [screenlog_notindb_calc] <> [screenlog_sum_notindb_calc]",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+screenlog_error_missing,screenlog,,descriptive,"<div style=""font-size: 120%; text-align: center; padding: 10px; color: rgb(152, 0, 21);border: 4px solid  rgb(152, 0, 21); background-color:  rgba(152, 0, 21, 0.1)"">Please ensure all fields are completed so that validity of the numbers entered can be checked.</div>",,,,,,,"[ref_id_arm2_valid] = '1' and [screenlog_cur_num] > [screenlog_fut_num] and ([screenlog_num_totalbirths] = '' or [screenlog_num_pretermlbw] = '' or [screenlog_num_eligible] = '' or [screenlog_num_indb] = '' or [screenlog_num_congenital] = '' or [screenlog_num_noprospect] = '' or [screenlog_num_nostaff] = '' or [screenlog_num_forgot] = '' or [screenlog_num_other] = '')",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+arm3_site_shortlabel,site_rand,,text,"Site Label (shortened)",,,,,,,,y,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if(
+find (' (', [record-dag-label]) <> 0,
+left([record-dag-label],find (' (', [record-dag-label])-1),
+[record-dag-label])
+)"
+ref_id_arm3_dag_pfx,site_rand,,text,"Reference Number - DAG Prefix",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if(left([record-dag-label], 2)='' and [site_rand_complete] = '',
+    left([user-dag-label],2),
+    left([record-dag-label],2)
+)
+)"
+ref_id_arm3_valid,site_rand,,calc,"Reference Number is valid?","if(
+    length([ref_id]) = 2 and [ref_id] = left([record-dag-label], 2),
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm3_err,site_rand,,descriptive,"<div style=""text-align: center; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1); padding: 10px;""> <h5 style=""font-weight: 900;"">Sorry, the record must be assigned to a data access group/site and the Reference Number must follow the correct format, e.g.: 01</h5> </div> ",,,,,,,"[record-dag-name] = ''",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+ref_id_arm3_err_format,site_rand,,descriptive,"<div style=""text-align: center; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1); padding: 10px;""> <h5 style=""font-weight: 900;"">Sorry, the Reference Number does not follow the correct format, e.g.: [ref_id_arm3_dag_pfx].</h5> </div> ",,,,,,,"[record-dag-name] <> '' and [ref_id_arm3_valid] = '0'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_rand_version,site_rand,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Miscellaneous
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+site_rand_title,site_rand,,descriptive,"<h2 class=""h4"" style=""text-align: center;"">[arm3_site_shortlabel] - Randomisation</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_rand_email,site_rand,,text,"Where to send confirmation email",,"Used to send randomisation confirmation email post-randomisation",email,,,y,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @SETVALUE='[user-email]' @NOMISSING @READONLY"
+site_rand_min_births,site_rand,,text,"Number of births per year/per labour ward and maternity theatre",,,integer,1,100000,,"[ref_id_arm3_valid] = '1'",y,,,,,"Randomisation
+Demographics
+@NOMISSING @FORCE-MINMAX
+ // Randomisation minimisation factor - should not be blank nor editable by site"
+site_rand_min_hosplevel,site_rand,,radio,"Hospital level (Health system level of the facility)","4, 4 | 5, 5 | 6, 6",,,,,,"[ref_id_arm3_valid] = '1'",y,,,,,"Randomisation
+Demographics
+@NOMISSING
+// Randomisation minimisation factor - should not be blank nor editable by site"
+site_rand_grp,site_rand,,radio,"Randomisation group","eenc_only, EENC only | eenc_plus_news_heat_care_bundle, EENC plus NEWS-HEAT care bundle",,,,,y,"[ref_id_arm3_valid] = '1'",y,,,,,"Randomisation
+Unblinding
+@NOMISSING"
+site_rand_grp_fake,site_rand,,radio,"Randomisation group (fake randomization allocation
+e.g. for blinded extracts)","eenc_only, EENC only | eenc_plus_news_heat_care_bundle, EENC plus NEWS-HEAT care bundle",,,,,,"[ref_id_arm3_valid] = '1'",,,,,,"Randomisation
+@NOMISSING
+@HIDDEN @HIDDEN-PDF @READONLY"
+site_rand_diagnostics,site_rand,,notes,"Randomisation diagnostics (diagnostic output for the randomization)",,,,,,y,"[ref_id_arm3_valid] = '1'",,,,,,"Randomisation
+Unblinding
+@NOMISSING
+@HIDDEN @HIDDEN-PDF @READONLY"
+site_rand_datetime,site_rand,,text,"Date/Time of Randomisation",,,datetime_dmy,,now,,"[site_rand_grp] <> ''",y,,,,,"Randomisation
+@READONLY @NOMISSING @HIDDEN-APP"
+site_rand_date,site_rand,,text,"Date of Randomisation",,,date_dmy,,,,"[site_rand_grp] <> ''",,,,,,"Randomisation
+@READONLY @NOMISSING @HIDDEN-APP
+@HIDDEN @HIDDEN-PDF @CALCTEXT(left([site_rand_datetime],10))"
+site_rand_time,site_rand,,text,"Time of Randomisation",,,time,,,,"[site_rand_grp] <> ''",,,,,,"Randomisation
+@READONLY @NOMISSING @HIDDEN-APP
+@HIDDEN @HIDDEN-PDF @CALCTEXT(right([site_rand_datetime],5))"
+site_rand_curr_view_is_app,site_rand,,text,"Custom field to discern if this form is being viewed in the REDCap Mobile App
+(Uses javascript injector module to set value to false)",,,,,,,,y,,,,,"Miscellaneous
+Data Management
+@SETVALUE='1' @HIDDEN-PDF @HIDDEN"
+site_rand_datetime_app,site_rand,,descriptive,"Date/Time of Randomisation: [site_rand_datetime]",,,,,,,"[site_rand_grp] <> '' and [site_rand_curr_view_is_app] = '1'",,,,,,"Miscellaneous
+// For display on the app, as the rand date/time field doesn't display in a nice way on the mobile app (can't remember if it allows the value to be edited or if it just shows the buttons even though it's supposed to be readonly/noneditable)
+@HIDDEN-PDF"
+site_phase_version,site_phase_dates_addtl_info,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Miscellaneous
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+site_phase_app_lasteditedby,site_phase_dates_addtl_info,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+site_phase_title,site_phase_dates_addtl_info,,descriptive,"<h2 class=""h4"" style=""text-align: center;"">[arm3_site_shortlabel] - Phase Dates</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_curr_email,site_phase_dates_addtl_info,,text,"Current user's email address (If edits trigger an automated notification, this email will be CC'd)",,,,,,,,,,,,," @SETVALUE='[user-email]' @READONLY @NOMISSING @HIDDEN @HIDDEN-PDF"
+site_dag_label_calc,site_phase_dates_addtl_info,,text,"Site DAG Label (Calculated - What it will be after this form is saved)",,,,,,y,,,,,,,"Derived
+Data Management
+Unblinding
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+if(
+    [site_details_arm_3][site_phase_3b_start_date] <> '',
+    concat([site_details_arm_3][arm3_site_shortlabel],' (',
+    'Imp. start: ',
+    if(left(day([site_details_arm_3][site_phase_3b_start_date]),1) = '0',right(day([site_details_arm_3][site_phase_3b_start_date]),1),day([site_details_arm_3][site_phase_3b_start_date])),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '01' or month([site_details_arm_3][site_phase_3b_start_date]) = '1',' Jan ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '02' or month([site_details_arm_3][site_phase_3b_start_date]) = '2',' Feb ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '03' or month([site_details_arm_3][site_phase_3b_start_date]) = '3',' Mar ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '04' or month([site_details_arm_3][site_phase_3b_start_date]) = '4',' Apr ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '05' or month([site_details_arm_3][site_phase_3b_start_date]) = '5',' May ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '06' or month([site_details_arm_3][site_phase_3b_start_date]) = '6',' Jun ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '07' or month([site_details_arm_3][site_phase_3b_start_date]) = '7',' Jul ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '08' or month([site_details_arm_3][site_phase_3b_start_date]) = '8',' Aug ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '09' or month([site_details_arm_3][site_phase_3b_start_date]) = '9',' Sep ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '10',' Oct ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '11',' Nov ',''),
+    if(month([site_details_arm_3][site_phase_3b_start_date]) = '12',' Dec ',''),
+    year([site_details_arm_3][site_phase_3b_start_date]),')'),
+    [site_details_arm_3][arm3_site_shortlabel]
+)
+)"
+site_dag_label_curr,site_phase_dates_addtl_info,,text,"Site DAG Label (Current - What it is at time of opening this form)",,,,,,y,,,,,,,"Derived
+Data Management
+Unblinding
+@HIDDEN @HIDDEN-PDF @CALCTEXT([record-dag-label])"
+site_dag_name,site_phase_dates_addtl_info,,text,"Record DAG Name (Used in API Client Connection to update DAG name)",,,,,,,,,,,,,"Derived
+Data Management
+Unblinding
+@HIDDEN @HIDDEN-PDF @CALCTEXT([record-dag-name])"
+site_phase_1_start_date,site_phase_dates_addtl_info,,text,"<p>Start Date:<span style=""font-weight: normal;""> PHASE 1 (2 months)
+<em>Baseline control phase for all facilities</em></span></p>",,,date_dmy,2025-01-01,,,,y,,,,,"Data Management
+@NOMISSING @FORCE-MINMAX @HIDEBUTTON"
+site_phase_2_start_date,site_phase_dates_addtl_info,,text,"<p>Start Date:<span style=""font-weight: normal;""> PHASE 2 (1 month)
+<em>Early essential newborn care (EENC) training and roll-out for all facilities, followed by randomisation</em></span></p>",,,date_dmy,[site_phase_1_start_date],[site_rand_date],,,y,,,,,"Data Management
+@NOMISSING @FORCE-MINMAX @HIDEBUTTON"
+site_phase_3a_start_date,site_phase_dates_addtl_info,,text,"<p>Start Date:<span style=""font-weight: normal;""> PHASE 3A (2 months)
+<em>Continuation of EENC provision plus NEWS-HEAT care bundle training and roll-out</em></span></p>",,,date_dmy,[site_rand_date],[site_phase_3b_start_date],,"[site_rand_grp] = 'eenc_plus_news_heat_care_bundle'",y,,,,,"Data Management
+@NOMISSING @FORCE-MINMAX @HIDEBUTTON"
+site_phase_3b_start_date,site_phase_dates_addtl_info,,text,"<p>Start Date: <span style=""font-weight: normal;"">PHASE 3B (3 months)</span>
+<em><span style=""font-weight: normal;"">EENC + NEWS-HEAT care bundle provision</span></em></p>",,,date_dmy,[site_phase_3a_start_date],2035-01-01,,"[site_rand_grp] = 'eenc_plus_news_heat_care_bundle'",y,,,,,"Data Management
+@NOMISSING @FORCE-MINMAX @HIDEBUTTON"
+site_phase_curr_view_is_app,site_phase_dates_addtl_info,,text,"Custom field to discern if this form is being viewed in the REDCap Mobile App
+(Uses javascript injector module to set value to false)",,,,,,,,y,,,,,"Miscellaneous
+Data Management
+@SETVALUE='1' @HIDDEN-PDF @HIDDEN"
+site_phase_3b_app_bug_warn,site_phase_dates_addtl_info,,descriptive,"<div style=""text-align:center;padding:10px;color:rgb(0, 85, 149);border:4px solid  rgb(0, 85, 149);background-color: rgba(0, 85, 149, 0.1)""><span style=""font-size:120%;"">BUG NOTIFICATION</span><p style=""font-weight:normal;"">If you've <strong>not</strong> updated the PHASE 3B start date, but are seeing a warning message below related to steps that have to be taken when/if updating the PHASE 3B start date from within the app, you can safely ignore it. There's a bug on the REDCap Mobile App causing this issue, but the team that develops the app are aware and are working on it.</p></div>",,,,,,,"[site_phase_curr_view_is_app] = '1' and [site_dag_label_curr] <> [site_dag_label_calc] and [site_rand_grp] = 'eenc_plus_news_heat_care_bundle'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_phase_3b_update_warn_notsite,site_phase_dates_addtl_info,,descriptive,"<div style=""text-align:center;padding:10px;color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1);""><span style=""font-size:120%;"">IMPORTANT</span><p>If the PHASE 3B start date is updated, then the REDCap Mobile App's project setup and data will need to be updated as soon as possible.</p><p style=""font-weight:normal;"">Please ensure that a notification is sent to the site letting them know to do this ASAP, and direct them to the following page for further guidance/instructions: <a href=""[redcap-version-url]index.php?pid=[project-id]&route=ProjectDashController:view&dash_id=15"">REDCap Mobile App Guidance
+</a></p></div>",,,,,,,"[site_dag_label_curr] = [site_dag_label_calc] and [user-dag-label] = '' and [site_rand_grp] = 'eenc_plus_news_heat_care_bundle'",,,,,,"Miscellaneous
+@HIDDEN-PDF @HIDDEN-APP"
+site_phase_3b_update_warn_site_form,site_phase_dates_addtl_info,,descriptive,"<div style=""text-align:center;padding:10px;color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1);""><span style=""font-size:120%;"">IMPORTANT</span> <p>If the PHASE 3B start date is updated, then the REDCap Mobile App's project setup and data will need to be updated as soon as possible.</p> <p style=""font-weight: normal;"">If you have updated the PHASE 3B start date to a date other than today, then please do the following steps when you are able:</p> <ul> <li style=""font-weight: normal; text-align: left;"">Send the updated data to the server after saving this form.</li> <li style=""font-weight: normal; text-align: left;"">First thing tomorrow, ensure that you do a Refresh of the Project Setup and Data on the REDCap Mobile App</li> </ul> <p style=""font-weight: normal;"">If you have updated the PHASE 3B start date to a date to today's date, then please do the following steps as soon as possible:</p> <ul> <li style=""font-weight: normal; text-align: left;"">Send the updated data to the server after saving this form.</li> <li style=""font-weight: normal; text-align: left;"">Open this form on the web version of REDCap and click ""Save as Complete"".</li> <li style=""font-weight: normal; text-align: left;"">Refresh the Project Setup and Data on the REDCap Mobile App.</li> </ul> <p style=""font-weight: normal;"">Please refer to the following page for further guidance/instructions: <a href=""[redcap-version-url]index.php?pid=[project-id]&route=ProjectDashController:view&dash_id=15"">REDCap Mobile App Guidance</a></p></div>",,,,,,,"[site_dag_label_curr] <> [site_dag_label_calc] and [user-dag-label] <> '' and [site_rand_grp] = 'eenc_plus_news_heat_care_bundle'",,,,,,"Miscellaneous
+@HIDDEN-PDF @HIDDEN-APP"
+site_phase_3b_update_warn_site_app,site_phase_dates_addtl_info,,descriptive,"<div style=""text-align:center;padding:10px;color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1);""><span style=""font-size:120%;"">IMPORTANT</span> <p>If the PHASE 3B start date is updated, then the REDCap Mobile App's project setup and data will need to be updated as soon as possible.</p> <p style=""font-weight: normal;"">If you have updated the PHASE 3B start date to a date other than today, then please do the following steps when you are able:</p> <ul> <li style=""font-weight: normal; text-align: left;"">Send the updated data to the server after saving this form.</li> <li style=""font-weight: normal; text-align: left;"">First thing tomorrow, ensure that you do a Refresh of the Project Setup and Data on the REDCap Mobile App</li> </ul> <p style=""font-weight: normal;"">If you have updated the PHASE 3B start date to a date to today's date, then please do the following steps as soon as possible:</p> <ul> <li style=""font-weight: normal; text-align: left;"">Send the updated data to the server after saving this form.</li> <li style=""font-weight: normal; text-align: left;"">Open this form on the web version of REDCap and click ""Save as Complete"".</li> <li style=""font-weight: normal; text-align: left;"">Refresh the Project Setup and Data on the REDCap Mobile App.</li> </ul> <p style=""font-weight: normal;"">For further guidance/instructions, please refer to the ""REDCap Mobile App Guidance"" dashboard page on the web version of REDCap (or the exported PDF version of the dashboard page - which you can save for offline use by viewing the page and clicking ""Export as PDF"" in the top right corner).</p></div>",,,,,,,"[site_dag_label_curr] <> [site_dag_label_calc] and [user-dag-label] <> '' and [site_phase_curr_view_is_app] = '1' and [site_rand_grp] = 'eenc_plus_news_heat_care_bundle'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_end_date,site_phase_dates_addtl_info,,text,"End Date",,,date_dmy,[site_rand_date],2035-01-01,,,y,,,,,"Data Management
+@NOMISSING @FORCE-MINMAX @HIDEBUTTON"
+site_info_title,site_phase_dates_addtl_info,,descriptive,"<h2 class=""h4"" style=""text-align: center;"">[arm3_site_shortlabel] - Additional Information</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_info_hiv,site_phase_dates_addtl_info,,text,"Total number of people living with HIV (PLHIV) for females aged ≥15 ",,,number,0,2000000,,,y,,,,,"Demographics
+@FORCE-MINMAX"
+site_info_malaria,site_phase_dates_addtl_info,,radio,"<div class=""rich-text-field-label""><p>Malaria burden (classified from median incidence)<br><br><span style=""font-weight: normal;"">Classification of malaria burden using median malaria incidence (per 1000 population) collected between 2019-2023 </span><br><span style=""font-weight: normal;"">No transmission (< 1), Very Low (2.0), Low (11.0), Moderate (54.0), Moderate to high (95.0), High (474.0), Very High (748.0).</span></p></div>","no_transmission, No transmission | very_low, Very low | low, Low | moderate, Moderate | moderate_to_high, Moderate to high | high, High | very_high, Very high | unknown, Unknown",,,,,,,y,,,,,"Demographics
+@NOMISSING"
+site_info_num_of_staff,site_phase_dates_addtl_info,,text,"Number of staff in labour ward/maternity theatre at start of baseline data collection period",,,number,0,10000,,,y,,,,,"Demographics
+Primary Outcome Not Primary Analysis
+@FORCE-MINMAX"
+site_info_staff,site_phase_dates_addtl_info,,descriptive,"<div class=""rich-text-field-label""><p><strong>Number of staff in the labour ward/maternity theatre by job title</strong></p> <table style=""border-collapse: collapse; width: 99.9489%; border-width: 1px;"" border=""1""><colgroup><col style=""width: 66.66%;""><col style=""width: 33.33%;""></colgroup> <tbody> <tr> <td style=""padding: 10px;"">Staff job title</td> <td style=""padding: 10px;"">Number</td> </tr> <tr> <td style=""padding: 10px;""><span style=""font-weight: normal;"">Nurses</span></td> <td style=""padding: 10px;"">{site_info_staff_nurse:icons}</td> </tr> <tr> <td style=""padding: 10px;""><span style=""font-weight: normal;"">Doctors<br><em>(Obstetricians, Medical Officers, Medical Officer Interns)</em></span></td> <td style=""padding: 10px;"">{site_info_staff_doctor:icons}</td> </tr> <tr> <td style=""padding: 10px;""><span style=""font-weight: normal;"">Clinical Officers<br><em>(RHealth/ Others) </em></span></td> <td style=""padding: 10px;"">{site_info_staff_co:icons}</td> </tr> </tbody> </table></div>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_info_staff_nurse,site_phase_dates_addtl_info,,text,"Number of nurses in the labour ward/maternity theatre",,,number,0,10000,,,y,,,,,"Demographics
+Primary Outcome Not Primary Analysis
+@FORCE-MINMAX"
+site_info_staff_doctor,site_phase_dates_addtl_info,,text,"Number of Doctors (Obstetricians, Medical Officers, Medical Officer Interns) in the labour ward/maternity theatre",,,number,0,10000,,,y,,,,,"Demographics
+Primary Outcome Not Primary Analysis
+@FORCE-MINMAX"
+site_info_staff_co,site_phase_dates_addtl_info,,text,"Number of Clinical Officers (RHealth/Others) in the labour ward/maternity theatre",,,number,0,10000,,,y,,,,,"Demographics
+Primary Outcome Not Primary Analysis
+@FORCE-MINMAX"
+site_info_equipment,site_phase_dates_addtl_info,,descriptive,"<div class=""rich-text-field-label""><p><strong>Equipment available in labour ward/maternity theatre for EENC training</strong></p> <table style=""border-collapse: collapse; width: 99.9489%; border-width: 1px;"" border=""1""><colgroup><col style=""width: 66.66%;""><col style=""width: 33.33%;""></colgroup> <tbody> <tr> <td style=""padding: 10px;"">Equipment</td> <td style=""padding: 10px;"">Number</td> </tr> <tr> <td style=""padding: 10px;""><span style=""font-weight: normal;"">Heaters</span></td> <td style=""padding: 10px;"">{site_info_heaters:icons}</td> </tr> <tr> <td style=""padding: 10px;""><span style=""font-weight: normal;"">Suction machines and catheters</span></td> <td style=""padding: 10px;"">{site_info_suction:icons}</td> </tr> <tr> <td style=""padding: 10px;""><span style=""font-weight: normal;"">Bag valve masks</span></td> <td style=""padding: 10px;"">{site_info_bag:icons}</td> </tr> <tr> <td style=""padding: 10px;""><span style=""font-weight: normal;"">Oxygen supply</span></td> <td style=""padding: 10px;"">{site_info_oxygen:icons}</td> </tr> <tr> <td style=""padding: 10px;""><span style=""font-weight: normal;"">Towels</span></td> <td style=""padding: 10px;"">{site_info_towels:icons}</td> </tr> <tr> <td style=""padding: 10px;""><span style=""font-weight: normal;"">Hats</span></td> <td style=""padding: 10px;"">{site_info_hats:icons}</td> </tr> </tbody> </table></div>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_info_heaters,site_phase_dates_addtl_info,,text,"Number of heaters available in labour ward/maternity theatre for EENC training",,,number,0,10000,,,y,,,,,"Demographics
+@FORCE-MINMAX"
+site_info_suction,site_phase_dates_addtl_info,,text,"Number of suction machines and catheters available in labour ward/maternity theatre for EENC training
+",,,number,0,10000,,,y,,,,,"Demographics
+@FORCE-MINMAX"
+site_info_bag,site_phase_dates_addtl_info,,text,"Number of bag valve masks available in labour ward/maternity theatre for EENC training
+",,,number,0,10000,,,y,,,,,"Demographics
+@FORCE-MINMAX"
+site_info_oxygen,site_phase_dates_addtl_info,,text,"Number of oxygen supply available in labour ward/maternity theatre for EENC training",,,number,0,10000,,,y,,,,,"Demographics
+@FORCE-MINMAX"
+site_info_towels,site_phase_dates_addtl_info,,text,"Number of towels available in labour ward/maternity theatre for EENC training",,,number,0,10000,,,y,,,,,"Demographics
+@FORCE-MINMAX"
+site_info_hats,site_phase_dates_addtl_info,,text,"Number of hats available in labour ward/maternity theatre for EENC training",,,number,0,10000,,,y,,,,,"Demographics
+@FORCE-MINMAX"
+site_notification_version,notification_email_addresses,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+site_notification_lasteditedby,notification_email_addresses,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+site_notification_title,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><h2 class=""h4"" style=""text-align: center;"">[arm3_site_shortlabel] - Notification Email Addresses</h2> <p><span style=""font-weight: normal;"">This form can be utilized to define email addresses to include on notification emails that alert sites to update their REDCap Mobile App configuration in the event of, for instance:</span></p> <ul> <li><span style=""font-weight: normal;"">The implementation phase start date of a site has been changed</span></li> <li><span style=""font-weight: normal;"">The redcap project has been updated</span></li> </ul> <p><span style=""font-weight: normal;"">You can define up to 10 email addresses to include. Please do utilize the description field to give details on who each email address belongs to for clarity. You can also toggle email addresses on or off temporarily, if desired.</span></p> <table style=""border-collapse: collapse; width: 99.9729%; height: 275px;"" border=""1""><colgroup><col style=""width: 50.0522%;""><col style=""width: 49.9075%;""></colgroup> <tbody style=""vertical-align: top;""> <tr> <td>Email Address</td> <td>Description</td> </tr> <tr> <td><span style=""font-weight: normal;"">{site_email_1}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_1}</span></td> </tr> <tr> <td><span style=""font-weight: normal;"">{site_email_2}{site_email_dupe_2}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_2}</span></td> </tr> <tr> <td><span style=""font-weight: normal;"">{site_email_3}{site_email_dupe_3}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_3}</span></td> </tr> <tr> <td><span style=""font-weight: normal;"">{site_email_4}{site_email_dupe_4}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_4}</span></td> </tr> <tr style=""height: 25px;""> <td><span style=""font-weight: normal;"">{site_email_5}{site_email_dupe_5}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_5}</span></td> </tr> <tr> <td><span style=""font-weight: normal;"">{site_email_6}{site_email_dupe_6}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_6}</span></td> </tr> <tr> <td><span style=""font-weight: normal;"">{site_email_7}{site_email_dupe_7}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_7}</span></td> </tr> <tr> <td><span style=""font-weight: normal;"">{site_email_8}{site_email_dupe_8}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_8}</span></td> </tr> <tr> <td><span style=""font-weight: normal;"">{site_email_9}{site_email_dupe_9}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_9}</span></td> </tr> <tr> <td><span style=""font-weight: normal;"">{site_email_10}{site_email_dupe_10}</span></td> <td><span style=""font-weight: normal;"">{site_email_description_10}</span></td> </tr> </tbody> </table> <p> </p></div>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_1,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_description_1,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_1] <> ''",,,,,,Miscellaneous
+site_email_2,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_isdupe_2,notification_email_addresses,,text,"Site Email Duplicate (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([site_email_2] <> '' and [site_email_2] = [site_email_1],1,0))"
+site_email_dupe_2,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><p><span style=""font-weight: normal; color: #ba372a;"">Error! The email address entered appears to be a duplicate.</span></p></div>",,,,,,,"[site_email_isdupe_2] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_description_2,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_2] <> '' and [site_email_isdupe_2] = '0'",,,,,,Miscellaneous
+site_email_3,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_isdupe_3,notification_email_addresses,,text,"Site Email Duplicate (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([site_email_3] <> '' and ([site_email_3] = [site_email_2] or [site_email_3] = [site_email_1]),1,0))"
+site_email_dupe_3,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><p><span style=""font-weight: normal; color: #ba372a;"">Error! The email address entered appears to be a duplicate.</span></p></div>",,,,,,,"[site_email_isdupe_3] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_description_3,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_3] <> '' and [site_email_isdupe_3] = '0'",,,,,,Miscellaneous
+site_email_4,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_isdupe_4,notification_email_addresses,,text,"Site Email Duplicate (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([site_email_4] <> '' and (
+[site_email_4] = [site_email_3]
+or [site_email_4] = [site_email_2]
+or [site_email_4] = [site_email_1]
+),1,0))"
+site_email_dupe_4,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><p><span style=""font-weight: normal; color: #ba372a;"">Error! The email address entered appears to be a duplicate.</span></p></div>",,,,,,,"[site_email_isdupe_4] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_description_4,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_4] <> '' and [site_email_isdupe_4] = '0'",,,,,,Miscellaneous
+site_email_5,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_isdupe_5,notification_email_addresses,,text,"Site Email Duplicate (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([site_email_5] <> '' and (
+[site_email_5] = [site_email_4]
+or [site_email_5] = [site_email_3]
+or [site_email_5] = [site_email_2]
+or [site_email_5] = [site_email_1]
+),1,0))"
+site_email_dupe_5,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><p><span style=""font-weight: normal; color: #ba372a;"">Error! The email address entered appears to be a duplicate.</span></p></div>",,,,,,,"[site_email_isdupe_5] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_description_5,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_5] <> '' and [site_email_isdupe_5] = '0'",,,,,,Miscellaneous
+site_email_6,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_isdupe_6,notification_email_addresses,,text,"Site Email Duplicate (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([site_email_6] <> '' and (
+[site_email_6] = [site_email_5]
+or [site_email_6] = [site_email_4]
+or [site_email_6] = [site_email_3]
+or [site_email_6] = [site_email_2]
+or [site_email_6] = [site_email_1]
+),1,0))"
+site_email_dupe_6,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><p><span style=""font-weight: normal; color: #ba372a;"">Error! The email address entered appears to be a duplicate.</span></p></div>",,,,,,,"[site_email_isdupe_6] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_description_6,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_6] <> '' and [site_email_isdupe_6] = '0'",,,,,,Miscellaneous
+site_email_7,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_isdupe_7,notification_email_addresses,,text,"Site Email Duplicate (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([site_email_7] <> '' and (
+[site_email_7] = [site_email_6]
+or [site_email_7] = [site_email_5]
+or [site_email_7] = [site_email_4]
+or [site_email_7] = [site_email_3]
+or [site_email_7] = [site_email_2]
+or [site_email_7] = [site_email_1]
+),1,0))"
+site_email_dupe_7,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><p><span style=""font-weight: normal; color: #ba372a;"">Error! The email address entered appears to be a duplicate.</span></p></div>",,,,,,,"[site_email_isdupe_7] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_description_7,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_7] <> '' and [site_email_isdupe_7] = '0'",,,,,,Miscellaneous
+site_email_8,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_isdupe_8,notification_email_addresses,,text,"Site Email Duplicate (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([site_email_8] <> '' and (
+[site_email_8] = [site_email_7]
+or [site_email_8] = [site_email_6]
+or [site_email_8] = [site_email_5]
+or [site_email_8] = [site_email_4]
+or [site_email_8] = [site_email_3]
+or [site_email_8] = [site_email_2]
+or [site_email_8] = [site_email_1]
+),1,0))"
+site_email_dupe_8,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><p><span style=""font-weight: normal; color: #ba372a;"">Error! The email address entered appears to be a duplicate.</span></p></div>",,,,,,,"[site_email_isdupe_8] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_description_8,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_8] <> '' and [site_email_isdupe_8] = '0'",,,,,,Miscellaneous
+site_email_9,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_isdupe_9,notification_email_addresses,,text,"Site Email Duplicate (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([site_email_9] <> '' and (
+[site_email_9] = [site_email_8]
+or [site_email_9] = [site_email_7]
+or [site_email_9] = [site_email_6]
+or [site_email_9] = [site_email_5]
+or [site_email_9] = [site_email_4]
+or [site_email_9] = [site_email_3]
+or [site_email_9] = [site_email_2]
+or [site_email_9] = [site_email_1]
+),1,0))"
+site_email_dupe_9,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><p><span style=""font-weight: normal; color: #ba372a;"">Error! The email address entered appears to be a duplicate.</span></p></div>",,,,,,,"[site_email_isdupe_9] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_description_9,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_9] <> '' and [site_email_isdupe_9] = '0'",,,,,,Miscellaneous
+site_email_10,notification_email_addresses,,text,"Site Email",,,email,,,,,,,,,,Miscellaneous
+site_email_isdupe_10,notification_email_addresses,,text,"Site Email Duplicate (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(if([site_email_10] <> '' and (
+[site_email_10] = [site_email_9]
+or [site_email_10] = [site_email_8]
+or [site_email_10] = [site_email_7]
+or [site_email_10] = [site_email_6]
+or [site_email_10] = [site_email_5]
+or [site_email_10] = [site_email_4]
+or [site_email_10] = [site_email_3]
+or [site_email_10] = [site_email_2]
+or [site_email_10] = [site_email_1]
+),1,0))"
+site_email_dupe_10,notification_email_addresses,,descriptive,"<div class=""rich-text-field-label""><p><span style=""font-weight: normal; color: #ba372a;"">Error! The email address entered appears to be a duplicate.</span></p></div>",,,,,,,"[site_email_isdupe_10] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+site_email_description_10,notification_email_addresses,,notes,"Site Email Description",,,,,,,"[site_email_10] <> '' and [site_email_isdupe_10] = '0'",,,,,,Miscellaneous
+site_email_addresses_calc,notification_email_addresses,,text,"Email address list (calc)",,,,,,,,,,,,,"Derived
+Data Management
+@CALCTEXT(
+concat_ws(';',
+if( [site_email_1] <> '',[site_email_1],''),
+if( [site_email_2] <> '' and  [site_email_isdupe_2] = '0',[site_email_2],''),
+if( [site_email_3] <> '' and  [site_email_isdupe_3] = '0',[site_email_3],''),
+if( [site_email_4] <> '' and  [site_email_isdupe_4] = '0',[site_email_4],''),
+if( [site_email_5] <> '' and  [site_email_isdupe_5] = '0',[site_email_5],''),
+if( [site_email_6] <> '' and  [site_email_isdupe_6] = '0',[site_email_6],''),
+if( [site_email_7] <> '' and  [site_email_isdupe_7] = '0',[site_email_7],''),
+if( [site_email_8] <> '' and  [site_email_isdupe_8] = '0',[site_email_8],''),
+if( [site_email_9] <> '' and  [site_email_isdupe_9] = '0',[site_email_9],''),
+if( [site_email_10] <> '' and  [site_email_isdupe_10] = '0',[site_email_10],'')
+)
+) @HIDDEN-PDF"
+inv_signoff_version,inv_signoff,,dropdown,"Form Version","1.0, v1.0 27-May-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+inv_signoff_app_lasteditedby,inv_signoff,,text,"REDCap Mobile App - Last Edited By",,,,,,,,,,,,,"Data Management
+@HIDDEN @HIDDEN-PDF @READONLY @APPUSERNAME-APP"
+inv_signoff_title,inv_signoff,,descriptive,"<h2 class=""h4"" style=""text-align: center; text-transform: capitalize;"">Investigator Sign-Off Statement</h2>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+inv_signoff_advise,inv_signoff,,descriptive,"<div class=""rich-text-field-label""><p><span style=""color: #e03e2d;"">This page should not be completed by the research nurses. NCTU will coordinate the collection and upload of completed site sign off forms. Please do not complete this page until you have been asked to.</span></p></div>",,,,,,,,,,,,,"Miscellaneous
+@HIDDEN-PDF"
+inv_signoff_comp,inv_signoff,,dropdown,"Investigator site sign off ready to be completed","yes, Yes",,,,,,,y,,,,,"Data Management
+@NOMISSING"
+inv_signoff_sig,inv_signoff,,file,"Upload completed signed Investigator site sign off form",,,,,,y,"[inv_signoff_comp] = 'yes'",y,,,,,"Data Management
+@NOMISSING"
+inv_signoff_name,inv_signoff,,text,"Investigator name",,,,,,y,"[inv_signoff_comp] = 'yes'",y,,,,,"Data Management
+@NOMISSING"
+inv_signoff_date,inv_signoff,,text,"Investigator sign off date",,"Click on the calendar icon to select a date.",date_dmy,[trial_data__mother_arm_1][matdata_form_date],today,,"[inv_signoff_comp] = 'yes'",y,,,,,"Data Management
+@NOMISSING @FORCE-MINMAX"
+ref_id_arm4_len_valid,nemail,,calc,"Reference Number is a valid length?","if(
+    length([ref_id]) = 4,
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm4_char_valid,nemail,,calc,"Reference Number are valid characters (numbers only)","if(
+    [ref_id_arm4_len_valid] = '1' and isnumber(mid([ref_id], 1, 1)) and isnumber(mid([ref_id], 2, 1)) and isnumber(mid([ref_id], 3, 1)) and isnumber(mid([ref_id], 4, 1)),
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm4_valid,nemail,,calc,"Reference Number is valid?","if(
+    [ref_id_arm4_len_valid] = 1 and [ref_id_arm4_char_valid] = 1,
+    1,
+    0
+)",,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF"
+ref_id_arm4_err,nemail,,descriptive,"<div style=""text-align: center; color: #980015; border: 4px solid  #980015; background-color: rgba(152, 0, 21, 0.1); padding: 10px;""> <h5 style=""font-weight: 900;"">Sorry, the Reference Number must follow the correct format, e.g.: 0001.</h5> </div> ",,,,,,,"[ref_id_arm4_valid] = '0'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+nemail_version,nemail,,dropdown,"Form Version","1.0, v1.0 20-Oct-2025",,,,,,,,,,,,"Data Management
+@HIDDEN @DEFAULT='1.0' @NOMISSING @SAVE-PROMPT-EXEMPT-WHEN-AUTOSET"
+nemail_title,nemail,,descriptive,"<div class=""rich-text-field-label""><h2 class=""h4"" style=""text-align: center;"">Site Notification Email</h2> <p><span style=""font-weight: normal;"">This form can be utilized to send emails to selected site(s). The email addresses that the email is sent to are pulled directly from each site's ""Notification Email Addresses"" form.</span></p> <p><span style=""font-weight: normal;"">Using the fields below, specify the subject and content of your email. You can also add attachment(s). Once done, save this form as complete and use the button that appears at the bottom of the page to trigger sending the email. </span></p> <p><span style=""font-weight: normal;"">Once the email has been sent at least once, the subject and content fields will no longer be editable, but you can resend the email by clicking the ""Send Email"" button at the bottom of the page again. </span></p></div>",,,,,,,"[ref_id_arm4_valid] = '1' and [nemail_complete] <> ''",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+nemail_loading,nemail,,descriptive,"<p style=""background-color:white;text-align: center;"">
+<em>Loading, please wait... If the page takes longer than a few seconds to reload, please click ""Save & Stay"".</em>
+<img style=""display: block; margin-left: auto; margin-right: auto;"" title=""Loading..."" src=""https://redcap03.nottingham.ac.uk/redcap_v15.5.8/Resources/images/loader.gif"" alt=""Loading..."">
+</p>",,,,,,,"[nemail_complete] = '' and [ref_id_arm4_valid] = '1'",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+nemail_sender_email,nemail,,text,"Current user's email address (When the email is sent, the current user's email address will be CC'd)",,,,,,,,y,,,,,"Miscellaneous
+@SETVALUE='[user-email]' @READONLY @NOMISSING @HIDDEN @HIDDEN-PDF"
+nemail_sender_email_saved,nemail,,text,"Current user's email address (When the email is sent, the current user's email address will be CC'd) - What is currently saved to the database",,,,,,,,,,,,,"Miscellaneous
+@SETVALUE='[nemail_sender_email]' @READONLY @HIDDEN @HIDDEN-PDF"
+nemail_which_sites,nemail,,checkbox,"<div class=""rich-text-field-label""><p>Site(s) to email<br><span style=""color: #ba372a;""><em><span style=""font-weight: normal;"">Sites that have no email addresses listed on their respective site's ""Notification Email Addresses"" form will not be selectable. It may take a few seconds for this list to have the available checkboxes enabled.</span></em></span></p></div>","00, 00 Standard Care | 01, 01 Intervention A | 02, 02 Intervention B | 03, 03 Intervention C | 04, 04 Intervention D | 05, 05 Nonexistent Site | 10, 10 Test Site Ten | 11, 11 Test Site Eleven | 12, 12 Test Site Twelve | 13, 13 Test Site Thirteen | 14, 14 Test Site Fourteen | 15, 15 Test Site Fifteen | 16, 16 Test Site Sixteen | 17, 17 Test Site Seventeen | 18, 18 Test Site Eighteen | 19, 19 Test Site Nineteen | 20, 20 Test Site Twenty | 21, 21 Test Site Twenty One | 22, 22 Test Site Twenty Two | 23, 23 Test Site Twenty Three | 24, 24 Test Site Twenty Four | 25, 25 Test Site Twenty Five | 26, 26 Test Site Twenty Six",,,,,,"[ref_id_arm4_valid] = '1' and [nemail_complete] <> ''",,,,,,"Miscellaneous
+@NOMISSING @IF([nemail_sent_date] <> '',@READONLY,'') @HIDDEN-PDF"
+nemail_which_sites_now,nemail,,text,"Site(s) to email - Current edit (piped version)",,,,,,,,,,,,,"Derived
+Data Management
+@READONLY @HIDDEN @HIDDEN-PDF @CALCTEXT(datalookup('nemail_which_sites', [record-name]))"
+nemail_which_sites_saved,nemail,,text,"Site(s) to email - What is currently saved to the database",,,,,,,,,,,,,"Miscellaneous
+@SETVALUE='[nemail_which_sites]' @READONLY @HIDDEN @HIDDEN-PDF"
+nemail_sites_noaddresses,nemail,,text,"Sites with no email addresses defined",,,,,,,,,,,,,"Derived
+Data Management
+@HIDDEN @HIDDEN-PDF @CALCTEXT(
+concat_ws(',',
+if(length(trim(datalookup('site_email_addresses_calc', '00')))=0,'00',''),
+if(length(trim(datalookup('site_email_addresses_calc', '01')))=0,'01',''),
+if(length(trim(datalookup('site_email_addresses_calc', '02')))=0,'02',''),
+if(length(trim(datalookup('site_email_addresses_calc', '03')))=0,'03',''),
+if(length(trim(datalookup('site_email_addresses_calc', '04')))=0,'04',''),
+if(length(trim(datalookup('site_email_addresses_calc', '05')))=0,'05',''),
+if(length(trim(datalookup('site_email_addresses_calc', '10')))=0,'10',''),
+if(length(trim(datalookup('site_email_addresses_calc', '11')))=0,'11',''),
+if(length(trim(datalookup('site_email_addresses_calc', '12')))=0,'12',''),
+if(length(trim(datalookup('site_email_addresses_calc', '13')))=0,'13',''),
+if(length(trim(datalookup('site_email_addresses_calc', '14')))=0,'14',''),
+if(length(trim(datalookup('site_email_addresses_calc', '15')))=0,'15',''),
+if(length(trim(datalookup('site_email_addresses_calc', '16')))=0,'16',''),
+if(length(trim(datalookup('site_email_addresses_calc', '17')))=0,'17',''),
+if(length(trim(datalookup('site_email_addresses_calc', '18')))=0,'18',''),
+if(length(trim(datalookup('site_email_addresses_calc', '19')))=0,'19',''),
+if(length(trim(datalookup('site_email_addresses_calc', '20')))=0,'20',''),
+if(length(trim(datalookup('site_email_addresses_calc', '21')))=0,'21',''),
+if(length(trim(datalookup('site_email_addresses_calc', '22')))=0,'22',''),
+if(length(trim(datalookup('site_email_addresses_calc', '23')))=0,'23',''),
+if(length(trim(datalookup('site_email_addresses_calc', '24')))=0,'24',''),
+if(length(trim(datalookup('site_email_addresses_calc', '25')))=0,'25',''),
+if(length(trim(datalookup('site_email_addresses_calc', '26')))=0,'26','')
+)
+)"
+nemail_addresses,nemail,,text,"All Recipients - Email Address List (calculated field showing combination of site emails of site(s) selected and additional recipients)",,,,,,,"[ref_id_arm4_valid] = '1' and [nemail_complete] <> ''",,,,,,"Derived
+Data Management
+@HIDDEN-PDF @CALCTEXT(concat_ws(';',
+if([nemail_which_sites(00)] = '1',datalookup('site_email_addresses_calc', '00'),''),
+if([nemail_which_sites(01)] = '1',datalookup('site_email_addresses_calc', '01'),''),
+if([nemail_which_sites(02)] = '1',datalookup('site_email_addresses_calc', '02'),''),
+if([nemail_which_sites(03)] = '1',datalookup('site_email_addresses_calc', '03'),''),
+if([nemail_which_sites(03)] = '1',datalookup('site_email_addresses_calc', '03'),''),
+if([nemail_which_sites(04)] = '1',datalookup('site_email_addresses_calc', '04'),''),
+if([nemail_which_sites(05)] = '1',datalookup('site_email_addresses_calc', '05'),''),
+if([nemail_which_sites(10)] = '1',datalookup('site_email_addresses_calc', '10'),''),
+if([nemail_which_sites(11)] = '1',datalookup('site_email_addresses_calc', '11'),''),
+if([nemail_which_sites(12)] = '1',datalookup('site_email_addresses_calc', '12'),''),
+if([nemail_which_sites(13)] = '1',datalookup('site_email_addresses_calc', '13'),''),
+if([nemail_which_sites(14)] = '1',datalookup('site_email_addresses_calc', '14'),''),
+if([nemail_which_sites(15)] = '1',datalookup('site_email_addresses_calc', '15'),''),
+if([nemail_which_sites(16)] = '1',datalookup('site_email_addresses_calc', '16'),''),
+if([nemail_which_sites(17)] = '1',datalookup('site_email_addresses_calc', '17'),''),
+if([nemail_which_sites(18)] = '1',datalookup('site_email_addresses_calc', '18'),''),
+if([nemail_which_sites(19)] = '1',datalookup('site_email_addresses_calc', '19'),''),
+if([nemail_which_sites(20)] = '1',datalookup('site_email_addresses_calc', '20'),''),
+if([nemail_which_sites(21)] = '1',datalookup('site_email_addresses_calc', '21'),''),
+if([nemail_which_sites(22)] = '1',datalookup('site_email_addresses_calc', '22'),''),
+if([nemail_which_sites(23)] = '1',datalookup('site_email_addresses_calc', '23'),''),
+if([nemail_which_sites(24)] = '1',datalookup('site_email_addresses_calc', '24'),''),
+if([nemail_which_sites(25)] = '1',datalookup('site_email_addresses_calc', '25'),''),
+if([nemail_which_sites(26)] = '1',datalookup('site_email_addresses_calc', '26'),''),
+[nemail_addtl_recip]
+))"
+nemail_addresses_saved,nemail,,text,"Email Address List (calc) - What is currently saved to the database",,,,,,,,,,,,,"Miscellaneous
+@SETVALUE='[nemail_addresses]' @READONLY @HIDDEN @HIDDEN-PDF"
+nemail_addtl_recip,nemail,,text,"Additional Recipient(s)",,"Must be a valid email address or multiple email addresses separated by ;",,,,,"[ref_id_arm4_valid] = '1' and [nemail_complete] <> ''",,,,,,"Miscellaneous
+@REGEX=""^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])(?:\s*;\s*(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))*$""
+@VALIDATE-MESSAGE='Must be a valid email address or multiple email addresses separated by "";"". For example, some valid inputs are ""someone@institution.email"" or ""someone@institution.email;someone_else@institution.email""'
+@NOMISSING @IF([nemail_sent_date] <> '',@READONLY,'')"
+nemail_addtl_recip_saved,nemail,,text,"Additional Recipient(s) - What is currently saved to the database",,,,,,,,,,,,,"Miscellaneous
+@SETVALUE='[nemail_addtl_recip]' @READONLY @HIDDEN @HIDDEN-PDF"
+nemail_cc,nemail,,text,"<div class=""rich-text-field-label""><p>CC<br><em><span style=""font-weight: normal;"">NOTE: When the email is sent, the current user's email address will </span>also <span style=""font-weight: normal;"">be CC'd</span></em></p></div>",,"Must be a valid email address or multiple email addresses separated by ;",,,,,"[ref_id_arm4_valid] = '1' and [nemail_complete] <> ''",,,,,,"Miscellaneous
+@REGEX=""^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])(?:\s*;\s*(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))*$""
+@VALIDATE-MESSAGE='Must be a valid email address or multiple email addresses separated by "";"". For example, some valid inputs are ""someone@institution.email"" or ""someone@institution.email;someone_else@institution.email""'
+@NOMISSING @IF([nemail_sent_date] <> '',@READONLY,'')"
+nemail_cc_saved,nemail,,text,"CC - What is currently saved to the database",,,,,,,,,,,,,"Miscellaneous
+@SETVALUE='[nemail_cc]' @READONLY @HIDDEN @HIDDEN-PDF"
+nemail_bcc,nemail,,text,BCC,,"Must be a valid email address or multiple email addresses separated by ;",,,,,"[ref_id_arm4_valid] = '1' and [nemail_complete] <> ''",,,,,,"Miscellaneous
+@REGEX=""^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])(?:\s*;\s*(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|'(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*')@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]))*$""
+@VALIDATE-MESSAGE='Must be a valid email address or multiple email addresses separated by "";"". For example, some valid inputs are ""someone@institution.email"" or ""someone@institution.email;someone_else@institution.email""'
+@NOMISSING @IF([nemail_sent_date] <> '',@READONLY,'')"
+nemail_bcc_saved,nemail,,text,"BCC - What is currently saved to the database",,,,,,,,,,,,,"Miscellaneous
+@SETVALUE='[nemail_bcc]' @READONLY @HIDDEN @HIDDEN-PDF"
+nemail_subject,nemail,,text,"Email Subject",,,,,,,"[ref_id_arm4_valid] = '1' and [nemail_complete] <> ''",y,,,,,"Miscellaneous
+@NOMISSING @IF([nemail_sent_date] <> '',@READONLY,'')"
+nemail_subject_saved,nemail,,text,"Email Subject - What is currently saved to the database",,,,,,,,,,,,,"Miscellaneous
+@SETVALUE='[nemail_subject]' @READONLY @HIDDEN @HIDDEN-PDF"
+nemail_message,nemail,,notes,"Message Contents",,,,,,,"[ref_id_arm4_valid] = '1' and [nemail_complete] <> ''",y,LV,,,,"Miscellaneous
+@NOMISSING @IF([nemail_sent_date] <> '',@READONLY,'')"
+nemail_message_now,nemail,,text,"Message Contents - Current edit (piped version)",,,,,,,,,,,,,"Derived
+Data Management
+@READONLY @HIDDEN @HIDDEN-PDF @CALCTEXT(datalookup('nemail_message', [record-name]))"
+nemail_message_saved,nemail,,text,"Message Contents - What is currently saved to the database",,,,,,,,,,,,,"Miscellaneous
+@SETVALUE='[nemail_message]' @READONLY @HIDDEN @HIDDEN-PDF"
+nemail_attachment,nemail,,file,"Message Attachment (Optional)",,,,,,,"[ref_id_arm4_valid] = '1' and [nemail_complete] <> ''",,LV,,,,"Miscellaneous
+@NOMISSING @IF([nemail_sent_date] <> '',@READONLY,'')"
+nemail_attachment_saved,nemail,,text,"Message Attachment (Optional)- What is currently saved to the database",,,,,,,,,,,,,"Miscellaneous
+@SETVALUE='[nemail_attachment]' @READONLY @HIDDEN @HIDDEN-PDF"
+nemail_savestay_pre,nemail,,descriptive,"<div style=""text-align:center;padding:10px;color:rgb(0, 85, 149);border:4px solid  rgb(0, 85, 149);background-color: rgba(0, 85, 149, 0.1)""><span style=""font-size:120%;"">IMPORTANT</span><p style=""font-weight:normal;"">Once you've finalized the contents of your email notification, click <strong>save and stay</strong> to save what you want to send to the database. Then, you will be able to send the email.</p></div>",,,,,,,"[ref_id_arm4_valid] = '1' and 
+[nemail_sent_date] = '' and
+[nemail_sender_email] <> '' and 
+[nemail_addresses] <> '' and 
+[nemail_subject] <> '' and 
+[nemail_message] <> '' and 
+([nemail_sender_email] <> [nemail_sender_email_saved] or 
+[nemail_which_sites_now] <> [nemail_which_sites_saved] or
+[nemail_addresses] <> [nemail_addresses_saved] or
+[nemail_addtl_recip] <> [nemail_addtl_recip_saved] or 
+[nemail_cc] <> [nemail_cc_saved] or 
+[nemail_bcc] <> [nemail_bcc_saved] or 
+[nemail_subject] <> [nemail_subject_saved] or 
+[nemail_message_now] <> [nemail_message_saved] or 
+[nemail_attachment] <> [nemail_attachment_saved])",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+nemail_savestay_resend,nemail,,descriptive,"<div style=""text-align:center;padding:10px;color:rgb(0, 85, 149);border:4px solid  rgb(0, 85, 149);background-color: rgba(0, 85, 149, 0.1)""><span style=""font-size:120%;"">IMPORTANT</span><p style=""font-weight:normal;"">It appears that either the senders' email (e.g. who is viewing this form now) or some of the email addresses for the selected site(s) have been updated since this email was last sent on [nemail_sent_date]. Please click <strong>save and stay</strong> to save the updated email(s) to the database before resending the email if you're intending to resend it.</p></div>",,,,,,,"[ref_id_arm4_valid] = '1' and 
+[nemail_sent_date] <> '' and
+((
+[nemail_sender_email] <> [nemail_sender_email_saved]
+) 
+or 
+(
+[nemail_addresses] <> '' and
+[nemail_addresses] <> [nemail_addresses_saved]
+))",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+nemail_savestay_resend_noemails,nemail,,descriptive,"<div style=""text-align:center;padding:10px;color:rgb(0, 85, 149);border:4px solid  rgb(0, 85, 149);background-color: rgba(0, 85, 149, 0.1)""><span style=""font-size:120%;"">IMPORTANT</span><p style=""font-weight:normal;"">It appears that some of the email addresses for sites have been updated since this email was last sent on [nemail_sent_date] and, as a result, no emails are defined on the list (this may happen if, for instance, you send an email to site 01 that has one email defined on the list, then remove it, and then return here to try and email that site again). If you are looking to resend this email, please make sure the email list for the site(s) intended to be emailed are up to date, and then click <strong>save and stay</strong> to save the updated email address list for these sites. Then, so long as some emails are defined for the selected site(s), you will be able to resend the email. Doing so without following these steps may result in an error.</p></div>",,,,,,,"[ref_id_arm4_valid] = '1' and 
+[nemail_sent_date] <> '' and
+[nemail_addresses] = ''",,,,,,"Miscellaneous
+@HIDDEN-PDF"
+nemail_sent_date,nemail,,text,"<div class=""rich-text-field-label""><p>Send Email<br><span style=""font-weight: normal;""><em>Once you send the email, you cannot edit the contents any longer.</em></span></p></div>",,,datetime_dmy,,,,"[ref_id_arm4_valid] = '1' and 
+(
+[nemail_sent_date] <> ''
+ or 
+(
+[nemail_sender_email] = [nemail_sender_email_saved] and 
+[nemail_which_sites_now] = [nemail_which_sites_saved] and
+[nemail_addresses_saved] <> '' and 
+[nemail_addresses] = [nemail_addresses_saved] and 
+[nemail_addtl_recip] = [nemail_addtl_recip_saved] and 
+[nemail_cc] = [nemail_cc_saved] and 
+[nemail_bcc] = [nemail_bcc_saved] and 
+[nemail_subject_saved] <> '' and 
+[nemail_subject] = [nemail_subject_saved] and 
+[nemail_message_saved] <> '' and 
+[nemail_message_now] = [nemail_message_saved] and
+[nemail_attachment] = [nemail_attachment_saved]
+))",,,,,,"Miscellaneous
+@NOMISSING"

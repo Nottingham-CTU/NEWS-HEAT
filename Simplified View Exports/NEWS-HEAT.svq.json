@@ -1,0 +1,1 @@
+{"simplified_view":"quality_rules","rules":[{"rule_id":3728,"rule_name":"Sum of days of level 1\/2\/3 care is greater than 7","rule_logic":"([trial_data__baby_arm_1][babyoutcome_days_care_lv1] + [trial_data__baby_arm_1][babyoutcome_days_care_lv2] + [trial_data__baby_arm_1][babyoutcome_days_care_lv3]) > 7","real_time_execute":1}]}
